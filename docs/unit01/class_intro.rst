@@ -3,14 +3,14 @@ Class Introduction
 
 | **Welcome to:**
 |
-| COE 379L: Software Design For Responsible Intelligent Systems, Spring 2024
+| COE 379L: Software Design For Responsible Intelligent Systems, Spring 2025
 | Department of Aerospace Engineering and Engineering Mechanics
 | The University of Texas at Austin
 
 
 **Instructors:**
 
-* Joe Stubbs, jstubbs@tacc.utexas.edu, POB 6.436; ACB 2.246 (on Pickle Research Campus) 
+* Joe Stubbs, jstubbs@tacc.utexas.edu, ACB 2.246 (on Pickle Research Campus) 
 * Anagha Jamthe, ajamthe@tacc.utexas.edu
 
 
@@ -20,14 +20,14 @@ Class Introduction
 **Location:** ASE 2.134 A (in person)
 
 
-**Teaching Assistant:** Rohan Potru
+**Teaching Assistant:** Van Hai Nguyen
 
 
 **Important Links:**
 
-* Canvas: https://utexas.instructure.com/courses/1380211
-* Class Repo: https://coe-379l-sp24.readthedocs.io/
-* Slack: https://tacc-learn.slack.com/   #coe-379l-sp24 (channel)
+* Lecture Notes: https://coe379l-sp25.readthedocs.io/en/latest/
+* Canvas: https://utexas.instructure.com/courses/1409147
+* Slack: https://tacc-learn.slack.com/   #coe-379l-sp25 (channel)
 
 
 From the Syllabus 
@@ -190,7 +190,8 @@ for the flavor.
 
 As with COE 332, we will emphasize applications written in the Python programming language. We will make use 
 of a number of open source libraries, including numpy, pandas, matplotlib, seanbourn, scikitlearn, tensorflow 
-and keras. 
+and keras. This year, we'll be doing more with transformers and large language models (LLMs) than previously,
+and we'll introduce libraries such as transformers and LangChain for those topics. 
 
 We'll assume you know the topics we covered in COE 332, for example:
 
@@ -213,7 +214,7 @@ Many definitions have been given; for example, the proposal for the 1956 Dartmou
    feature of intelligence can in principle be so precisely described that a machine can be made to simulate it.*
 
 
-If we look back even just a couple of decades, we see that the field of Artifical Intelligence had already 
+If we look back even just a couple of decades, we see that the field of Artificial Intelligence had already 
 grown into a huge field and encompassed techniques from logic, probability, perception, reasoning, and learning.
 
 
@@ -239,8 +240,8 @@ Director of Research at Google, to be the definitive book on AI. It's topics inc
 
     Cover of the textbook Artificial Intelligence: A Modern Approach [1]; considered by many to be the definitive resource. The first edition was published in 1995.
 
-Recent as the last decade or so Machine Learning and Deep Learning as subfields within AI have taken off.
-Some say ML is the dominant subfield of AI.
+As recently as the last decade or so, the Machine Learning and Deep Learning as subfields within AI have taken off.
+Some say ML is the dominant subfield of AI. These topics will be the focus of our course. 
 
 
 What is Machine Learning?
@@ -297,22 +298,22 @@ Class Schedule
 * Week 1: Syllabus, Introduction to the course; TACC accounts, Class VM, Jupyter notebooks
 * Week 2: Introduction to data analysis, Numpy, Pandas, Matplotlib, Seaborn, 
 * Week 3: Introduction to machine learning, Linear Regression, 
-* Week 4: Assign Project 1 Finish Linear Regression, Linear Classification, 
-* Week 5: Finish Linear Classification, Data cleaning and preprocessing (Type conversion, categorical data, null/missing values, outlier detection) 
-* Week 6: K-nearest neighbor, over/underfitting, hyperparameters and tuning, cross-validation 
-* Week 7: Assign Project 2 Additional classifiers (Logistic Regression, Decision Trees, Random Forest, Naive Bayes)
-* Week 8: Other Measures of Model Quality and correctness (accuracy, recall precision, F-score, Testing in ML applications), Containerized Inference Servers
+* Week 4: Linear Classification, K-nearest neighbor, cross-validationtion; **Assign Project 1**
+* Week 5: Decision Trees, Random Forests, Ensemble methods; Boosting & Stacking; Measures of Model Quality. 
+* Week 6: Data Standardization; Model Pipelines; Model Persistence; **Project 1 Due**
+* Week 7: Introduction to Neural Networks and Deep Learning
+* Week 8: Introduction to Convolution Neural Networks (CNNs) **Assign Project 2** 
+* Week 9: MLOps **Project 2 Due** 
 
 * Spring Break 
 
-* Week 9: Introduction to Neural Networks, Neural Network concepts (activation functions, Loss functions, Back propagation), Classification with Neural Networks Assign Project 3 
-* Week 10: Convolution Neural Networks (CNN) I (Architecture, improvements over ANN), Image Pre-processing (sizing, gray scale/image reduction, augmentation) 
-* Week 11: CNN II, 
-* Week 12: Assign Project 4 Recurrent Neural Networks, Attention and Transformers, Hugging Face Transformers library
-* Week 13: MLOps
-* Week 14: Special Topics
+* Week 10: Introduction to Transformers **Assign Project 3**
+* Week 11: Hands-on Transformers; The Ollama Project; Linear Workflows with LLMs and LangChain **Assign Project 4**
+* Week 12: Linear Workflows with LLMs and LangChain cont.; Introduction to Retrieval Augmented Generation (RAG)
+* Week 13: Special Topics (e.g., Graph Databases; Non-linear Workflows with LLMs; LLM Benchmarks)
+* Week 14: Special Topics (e.g., Graph Databases; Non-linear Workflows with LLMs; LLM Benchmarks)
 
-Final projects will be due during the `Final Exam day for our class <https://registrar.utexas.edu/schedules/242/finals>`_; **Friday May, 3rd**
+Final projects will be due during the `Final Exam day for our class <https://registrar.utexas.edu/schedules/252/finals>`_; **TBD**
 
 
 **Before We Leave Class**
@@ -323,13 +324,15 @@ logging into the TACC User portal: https://portal.tacc.utexas.edu/
 * Go to the Account Profile (https://tacc.utexas.edu/portal/account) 
 * If you need help with your account you can submit a ticket: https://tacc.utexas.edu/portal/tickets
 
-2. Send an email to myself and Anagha (jstubbs AND ajamthe AT tacc DOT utexas DOT edu). 
-   Include your tacc account and that you are enrolled in COE 379L.
+2. Add your TACC account username to the Google doc spreadsheet shared in class. 
+
+3. Send an email to myself and Anagha (jstubbs AND ajamthe AT tacc DOT utexas DOT edu). 
+   Include the following:
 
 .. code-block:: bash 
 
     To: jstubbs, ajamthe @ tacc.utexas.edu
-    Subject: COE 379L TACC Account
+    Subject: COE 379L
     Body: 
     Please include the following: 
       1) Name
@@ -337,7 +340,8 @@ logging into the TACC User portal: https://portal.tacc.utexas.edu/
       3). EID 
       4). What do you want to get out of this class?
 
-We will have VMs created for person enrolled. 
+
+We will have VMs created for each person enrolled. 
 
 **Future Classes**
 
@@ -348,29 +352,7 @@ student VM.
 Student Responses: Goals for the Course 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We got some great responses from you all about your goals for the course. Here are a few 
-quotes: 
-
-*"I would love to get a deeper understanding on how machine learning can automate a lot of the 
-tedious tasks seen in our daily lives. Additionally, my work this past summer has let me 
-get a baseline for how to make a machine learning and classification model, so having a 
-formal education and introduction to this field would be really helpful!"*
-
-*"...what's most important to me is to learn something new, challenge myself, 
-and maybe become a better person because of it."*
-
-*"I always hear the word machine learning tossed around, 
-but I want to know more about what it really is and what its applications are."*
-
-Here is a word cloud of the responses (using term frequencies, a concept we will learn 
-more about in the context of NLP!)
-
-.. figure:: ./images/word-cloud-coe379.png
-    :width: 1000px
-    :align: center
-    :alt: Word cloud of the student responses 
-
-    Word cloud of the student responses 
+We'll update this section with responses from the class. 
 
 
 References and Additional Resources
