@@ -9,3 +9,4 @@ processing and analysis.
    :maxdepth: 1
 
    class_intro
+   class_vm
