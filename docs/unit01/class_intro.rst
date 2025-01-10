@@ -309,7 +309,7 @@ Class Schedule
 
 * Week 10: Introduction to Transformers **Assign Project 3**
 * Week 11: Hands-on Transformers; The Ollama Project; Linear Workflows with LLMs and LangChain **Assign Project 4**
-* Week 12: Linear Workflows with LLMs and LangChain cont.; Introduction to Retrieval Augmented Generation (RAG)
+* Week 12: Linear Workflows with LLMs and LangChain cont.; Introduction to Retrieval Augmented Generation (RAG) **Project 3 Due**
 * Week 13: Special Topics (e.g., Graph Databases; Non-linear Workflows with LLMs; LLM Benchmarks)
 * Week 14: Special Topics (e.g., Graph Databases; Non-linear Workflows with LLMs; LLM Benchmarks)
 
@@ -336,9 +336,9 @@ logging into the TACC User portal: https://portal.tacc.utexas.edu/
     Body: 
     Please include the following: 
       1) Name
-      2). TACC username 
-      3). EID 
-      4). What do you want to get out of this class?
+      2) TACC username 
+      3) EID 
+      4) What do you want to get out of this class?
 
 
 We will have VMs created for each person enrolled. 
