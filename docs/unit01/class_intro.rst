@@ -10,7 +10,7 @@ Class Introduction
 
 **Instructors:**
 
-* Joe Stubbs, jstubbs@tacc.utexas.edu, ACB 2.246 (on Pickle Research Campus) 
+* Joe Stubbs, jstubbs@tacc.utexas.edu, ACB 2.246 (on Pickle Research Campus), ASE 5.224 (Main Campus)
 * Anagha Jamthe, ajamthe@tacc.utexas.edu
 
 
