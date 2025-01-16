@@ -97,7 +97,7 @@ notebook server and use a browser to connect using the domain we have created.
 
 Here are the steps to take to set up your Jupyter notebook.
 
-1. **On the Student VM** First, start jupyter notebook container on the default port (8888). 
+1. **On the Student VM.** First, start jupyter notebook container on the default port (8888). 
 We'll use a docker container for this step, although that isn't strictly required. You should
 mount a local directory on the VM into the container so that the work you do in the 
 notebook server is persisted after the container exits. 
@@ -127,7 +127,7 @@ the following:
 
 Copy the ``token=227575a727e275de3ebe4a864e58805db3d268cc99a62230`` part from the log.
 
-2. **In your browser** Connect to your Jupyter server using the following URL 
+2. **In your browser.** Connect to your Jupyter server using the following URL 
 
 .. code-block:: bash 
 
@@ -146,7 +146,9 @@ For example, since my username is ``jstubbs``, I would use the following URL
 
 Tangent: Docker Review 
 ~~~~~~~~~~~~~~~~~~~~~~
-Let's take a closer look at that command:
+Let's take a closer look at that command. For a more in-depth introduction to Docker, see the 
+`Introduction to Containers <https://coe-332-sp23.readthedocs.io/en/latest/unit05/containers_1.html#>`_
+lecture notes from COE 332. 
 
 .. code-block:: bash
 
@@ -159,9 +161,7 @@ Let's take a closer look at that command:
       jstubbs/coe379l \ 
       infinity
 
-What do each of these parts of the command do? (Need a docker refresher? Check out the 
-COE 332 lecture notes that 
-`introduce containers <https://coe-332-sp23.readthedocs.io/en/latest/unit05/containers_1.html#>`_. )
+What do each of these parts of the command do?
 
 Similarly, let's break down the second command
 
