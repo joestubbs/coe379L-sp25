@@ -61,7 +61,7 @@ Running Code on the VM
 There will be two kinds of code writing that we will do in this class: 1) exploratory coding, where we will 
 be investigating data sets, looking for patterns, and trying out new algorithms and methods; and 2) software 
 engineering where we will develop entire applications. Correspondingly, we suggest using Jupyter notebooks 
-for case 1) and an interactive development environmnet (IDE) for case two. Specifically, we will use the 
+for case 1) and an interactive development environmnet (IDE) for case 2). Specifically, we will use the 
 VSCode IDE. 
 
 In this module, we will show you how to connect to your VM in two ways:
@@ -76,14 +76,14 @@ We have created a Docker image available on the public Docker Hub (hub.docker.co
 
 .. note:: 
  The class image is ``jstubbs/coe379l``. 
- Use either the default (latest) tag or the ``:sp24`` tag. 
+ Use either the default (latest) tag or the ``:sp25`` tag. 
 
 The docker image contains all of the libraries that we will need for the course, including 
 ``numpy`` and ``jupyter``. 
 
 You can see a list of all of the packages installed in the 
-`poetry.lock <https://github.com/joestubbs/coe379L-sp24/blob/master/poetry.lock>`_ file on the 
-`class repo <https://github.com/joestubbs/coe379L-sp24>`_. 
+`poetry.lock <https://github.com/joestubbs/coe379L-sp25/blob/master/poetry.lock>`_ file on the 
+`class repo <https://github.com/joestubbs/coe379L-sp25>`_. 
 (and by the way, if you don't know about Python Poetry, `check it out <https://python-poetry.org/>`_!)
 
 
