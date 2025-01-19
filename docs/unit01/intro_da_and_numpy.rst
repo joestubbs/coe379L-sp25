@@ -144,14 +144,14 @@ We have created a Docker image available on the public Docker Hub (hub.docker.co
 
 .. note:: 
  The class image is ``jstubbs/coe379l``. 
- Use either the default (latest) tag or the ``:sp24`` tag. 
+ Use either the default (latest) tag or the ``:sp25`` tag. 
 
 The docker image contains all of the libraries that we will need for the course, including 
 ``numpy`` and ``jupyter``. 
 
 You can see a list of all of the packages installed in the 
-`poetry.lock <https://github.com/joestubbs/coe379L-sp24/blob/master/poetry.lock>`_ file on the 
-`class repo <https://github.com/joestubbs/coe379L-sp24>`_. 
+`poetry.lock <https://github.com/joestubbs/coe379L-sp25/blob/master/poetry.lock>`_ file on the 
+`class repo <https://github.com/joestubbs/coe379L-sp25>`_. 
 (and by the way, if you don't know about Python Poetry, `check it out <https://python-poetry.org/>`_!)
 
 Numpy Arrays
@@ -238,10 +238,10 @@ package from numpy. Here we create an array of random integers over a specific r
         [41, 84, 25, 89],
         [23, 99, 94,  3]])
 
-Just like any other array, you can perform Indexing and slicing on numpy arrays. 
+Note that the value of the ``size`` parameter is a tuple with the sizes of each dimension. 
 
-..
-  Other Functions For Creating Arrays
+
+.. Other Functions For Creating Arrays
   -----------------------------------
 
   Numpy provides a number of other functions for creating arrays. We mention a few briefly here.
