@@ -18,7 +18,7 @@ In order for us to create a VM for you, we need you to perform these initial ste
 
 .. code-block:: bash 
 
-    ssh-keygen -t rsa -b 2048 -q -N "" -f ~/.ssh/id_rs
+    ssh-keygen -t rsa -b 2048 -q -N "" -f ~/.ssh/id_rsa
 
 
 SSH Access To Your VM
