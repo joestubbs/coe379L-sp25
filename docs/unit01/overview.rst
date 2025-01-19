@@ -10,3 +10,5 @@ processing and analysis.
 
    class_intro
    class_vm
+   intro_da_and_numpy
+   pandas
