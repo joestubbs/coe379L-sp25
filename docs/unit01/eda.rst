@@ -20,7 +20,7 @@ By the end of this module, students should be able to:
    categorical data to integers using one-hot encoding. 
 4. Perform basic duplicate and missing value detection and treatment. 
 5. Compute basic statistical properties of data, including mean, median, max and min. 
-6. Apply simple univariate and multivariate analysis of the feature columents including 
+6. Apply simple univariate and multivariate analysis of the feature columns including 
    visualization techniques using matplotlib and/or seaborn libraries. 
 
 
@@ -155,7 +155,7 @@ particular data elements or columns.
 
 So let's think about this dataset. Any one have a thought as to what is going on here? 
 
-This is a dataset about used cars -- their current price as well as number of other features, such as the brand of the car,the model, the year it was made, the fuel and 
+This is a dataset about used cars -- their current price as well as number of other features, such as the brand of the car, the model, the year it was made, the fuel and 
 transmission, etc.  
 
 
@@ -249,7 +249,7 @@ Recall that the ``info()`` function returned the type information for each colum
 .. code-block:: python3 
 
    >>> cars.info()
-     <class 'pandas.core.frame.DataFrame'>
+   <class 'pandas.core.frame.DataFrame'>
    RangeIndex: 101 entries, 0 to 100
    Data columns (total 12 columns):
    #   Column        Non-Null Count  Dtype 
@@ -257,8 +257,8 @@ Recall that the ``info()`` function returned the type information for each colum
    0   brand         101 non-null    object
    1   model         101 non-null    object
    2   model_year    101 non-null    int64 
-   3   mileage        101 non-null    int64 
-   4   fuel_type     94 non-null     object
+   3   mileage       101 non-null    int64 
+   4   fuel_type     95 non-null     object
    5   engine        101 non-null    object
    6   transmission  101 non-null    object
    7   ext_col       101 non-null    object
@@ -269,7 +269,7 @@ Recall that the ``info()`` function returned the type information for each colum
    dtypes: int64(3), object(9)
    memory usage: 9.6+ KB
 
-We can see that ``engine`` column contains numeric data, for example: 375.0HP 3.5L V6 Cylinder Engine Gasoline Fue but it is represented as a string
+We can see that ``engine`` column contains numeric data, for example: ``375.0HP 3.5L V6 Cylinder Engine Gasoline Fuel`` but it is represented as a string
 
 We need to strip off the units characters and leave only the numeric value. At that point we can 
 cast the value to a float. 
@@ -287,7 +287,9 @@ We'll use the regular expression to extract number before the space in ``engine`
 Recall from the previous module the ``astype()`` function, for casting to a specific python type.  
 
 .. code-block:: python3
+
    cars['engine'] = cars['engine'].str.extract(r'(\d+(\.\d+)?)')[0].astype(float).astype(float)
+
 
 Regular Expression ``(r'(\d+(\.\d+)?)')``:
 ``\d+`` matches one or more digits (i.e., the whole number part of the horsepower).
@@ -518,7 +520,7 @@ Another way to check for nulls is to use the ``isnull()`` method together with `
    model	0
    model_year	0
    mileage	0
-   fuel_type	7
+   fuel_type	6
    engine	0
    transmission	0
    ext_col	0
@@ -600,6 +602,9 @@ boolean columns will have no overlap.
 **In-Class Exercise.** Let's fill in the missing values for ``fuel_type`` by setting a missing car's fuel_type to 
 be the mode of car brand for all other cars. 
 
+Note: Ideally, we should have chose ``model`` as the groupby feature. However,
+since the dataset is small, we did not have enough information of same model types that were missing data and we had go with
+brand. This might affect the analysis in some situations so we need to be bit careful.
 
 *Solution:*
 
@@ -701,7 +706,7 @@ bit columns. Notes on the ``get_dummies()`` function:
 We will do the one-hot encoding only for one colum ``fuel_type``. 
 
 .. code-block:: python3 
-   :emphasize-lines: 19-24
+   :emphasize-lines: 19-22
 
    >>> cars = pd.get_dummies(cars, columns=["fuel_type"], drop_first=True)
    >>> cars.info()
@@ -816,6 +821,10 @@ The output shows a number of statistics for each column, including:
 This information helps us to see how the values of a particular column are distributed. For example, 
 the data indicate that: 
 
+* Oldest car in the dataset is from the year 1993 and newest one is from 2019.
+* Minimum mileage on some of the cars is 2437 miles
+* Lowest price of the used used car is less than 4k.
+You can find many more interesting insights from the data.
 
 We can also use graphical tools for this purpose. 
 
