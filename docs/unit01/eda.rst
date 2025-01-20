@@ -924,7 +924,7 @@ We can immediately see that more cars of brand Ford were in the dataset.
 
 Many aspects of the generated plot are configurable. We won't cover most of the configurations, 
 but we do point out that configurations available on the ``matplotlib.pyplot`` object 
-can be used directly on a seaborn plot. For example, rotating the labels for an axis: 
+can be used directly on a seaborn plot. For example, rotating the labels for an axis.
 
 
 
@@ -1032,7 +1032,7 @@ closer to -1 meaning more negatively or oppositely corrolated).
 
 What are some observations we can make based on the heat map? 
 
-1. We can see that there is a negaive correlation between ``price`` and ``mileage``. More mileage on car the price will be lower.
+1. We can see that there is a negaTive correlation between ``price`` and ``mileage``. More mileage on car the price will be lower.
 2. There is a positive correlation between ``engine`` and ``price``, which is obvious.
 
 
