@@ -5,9 +5,9 @@ In this module, we will introduce the Python library ``pandas`` for working with
 and manipulating them [1]. After going through this module, students should be able to:
 
 * Install and import the ``pandas`` package into a Python program.
-* Understand the primary differences between the pandas ``series`` and ``dataframe``, and when to use each.
+* Understand the primary differences between the pandas ``Series`` and ``Dataframe``, and when to use each.
 * Loading data from an external file into a pandas object. 
-* Accessing pandas ``series`` and ``dataframe`` to perform various dataset manipulations.
+* Accessing pandas ``Series`` and ``Dataframe`` to perform various dataset manipulations.
 
 
 Installing Pandas
@@ -28,9 +28,9 @@ as ``pd``, i.e.,
 
 Now, let's take a look at the basic data structures supported by Pandas.
 
-..
-    Pandas Series
-    ~~~~~~~~~~~~~
+
+Pandas Series
+~~~~~~~~~~~~~
 
     A pandas Series is a one-dimensional array capable of holding data of different types 
     (string, float, integer, objects, etc.) as well as axis labels. It can be thought of 
