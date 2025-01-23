@@ -32,8 +32,7 @@ Now, let's take a look at the basic data structures supported by Pandas.
 Pandas Series
 ~~~~~~~~~~~~~
 
-    A pandas Series is a one-dimensional array and it typically holds data of a single data type across all elements
-    It capable of supporting data of different types (string, float, integer, objects, etc.) as well as axis labels. It can be thought of 
+    A pandas Series is a one-dimensional array that can hold data of different types (string, float, integer, objects, etc.) as well as axis labels. It can be thought of 
     as a single column in a dataset.
 
     We can create ``Series`` objects in different ways; for example, directly from a 
@@ -375,7 +374,7 @@ Keep in mind that the meaning of these operations depends on the underlying data
 
 .. code-block:: python3 
 
-    >>> employees[ employees['eid'] > "Austin" ]
+    >>> employees[ employees['eid'] > "E0125" ]
 
 The ``astype`` Method and More Complex Conditionals 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
