@@ -67,7 +67,7 @@ Python libraries that specialize in each task type.
 * Numpy and Scipy -- These libraries form the foundation of all of the libraries we will use. The 
   ``numpy`` package, which we will look at first, provides an efficient multi-dimensional array object, 
   useful for performing numeric computations across vectors and matrices. The ``scipy`` pacakge, which 
-  depends on the nd-array from ``numpy``, adds a number of scientific algorithms, such as algorithms
+  depends on the ndarray from ``numpy``, adds a number of scientific algorithms, such as algorithms
   from linear algebra (e.g., matrix calculations), numerical methods (e.g., integration), FFTs, etc.
 * Pandas -- The ``pandas`` library provides an efficient Series and DataFrame class for working with 
   column/tabular data. We will make extensive use of Pandas throughout the course for data preprocessing

@@ -32,8 +32,8 @@ Now, let's take a look at the basic data structures supported by Pandas.
 Pandas Series
 ~~~~~~~~~~~~~
 
-    A pandas Series is a one-dimensional array capable of holding data of different types 
-    (string, float, integer, objects, etc.) as well as axis labels. It can be thought of 
+    A pandas Series is a one-dimensional array and it typically holds data of a single data type across all elements
+    It capable of supporting data of different types (string, float, integer, objects, etc.) as well as axis labels. It can be thought of 
     as a single column in a dataset.
 
     We can create ``Series`` objects in different ways; for example, directly from a 
@@ -101,7 +101,7 @@ Pandas Series
     .. code-block:: python3 
 
         >>> supplies = ['Spiral_Notebook', 'Gel_Pens', 'Sticky_Notes', 'Laptop_Bag', 'Daily_Planner']
-        >>> cost_supplies_dollars = [12.81, 9.99, 5.99, 23.66, 10.99]
+        >>> cost_supplies_dollars = [2.81, 9.99, 3.99, 23.66, 10.99]
 
     We can use these to create a Series as follows: 
 
@@ -109,9 +109,9 @@ Pandas Series
 
         >>> supplies_cost = pd.Series(cost_supplies_dollars, index=supplies)
         >>> supplies_cost
-        Spiral_Notebook    12.81
+        Spiral_Notebook     2.81
         Gel_Pens            9.99
-        Sticky_Notes        5.99
+        Sticky_Notes        3.99
         Laptop_Bag         23.66
         Daily_Planner      10.99
         dtype: float64
@@ -131,14 +131,14 @@ Pandas Series
 
         >>> supplies_cost["Gel_Pens":"Daily_Planner"]
         Gel_Pens          9.99
-        Sticky_Notes      5.99
+        Sticky_Notes      3.99
         Laptop_Bag       23.66
         Daily_Planner    10.99
         dtype: float64
 
     **In-class Exercise:** 
 
-    1. Try accessing multiple elements of the supplies_cost series at positions 1,3 and 0.
+    1. Try accessing multiple elements of the supplies_cost series at positions 0, 1, and 3.
 
     2. What will be the output of following code?
 
@@ -162,8 +162,8 @@ in a spreadsheet, we might have several columns, such as:
 
 * Name
 * EID
-* Department 
 * Location 
+* Department 
 
 Each employee could be thought of as a row in our spreadsheet with values for each of the columns above. 
 For instance, we might have data on the following employees: 
@@ -375,7 +375,7 @@ Keep in mind that the meaning of these operations depends on the underlying data
 
 .. code-block:: python3 
 
-    >>> employees[ employees['eid'] > "E0125" ]
+    >>> employees[ employees['eid'] > "Austin" ]
 
 The ``astype`` Method and More Complex Conditionals 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -550,12 +550,12 @@ Something interesting (and not in a good way) has happened... the first row has 
 of ``NaN`` for the ``Business Card`` column and every other is off by one; for example, 
 it has a value of ``John Doe`` for the ``eid`` column. 
 
-A Word on Missing Values and the Nan Value 
+A Word on Missing Values and the NaN Value 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The pandas library has multiple ways of representing missing values. We'll discuss dealing with missing 
 values more in the next lecture, and we will get practice working with missing values throughout the 
-semester. For now, know that the ``Nan`` value showing up in the above DataFrame is the numpy "Nan"
+semester. For now, know that the ``NaN`` value showing up in the above DataFrame is the numpy "Nan"
 value (i.e., ``np.nan``), and it has some interesting properties. For example, it never "equals" 
 any other value when testing with the ``==`` operator. 
 
