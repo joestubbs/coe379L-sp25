@@ -539,7 +539,7 @@ what we might expect:
 .. code-block:: python3 
 
     >>> employees_bad = pd.read_csv('employees_bad.csv')
-    >>> employees_bad3.iloc[[0, 1, 2]]
+    >>> employees_bad.iloc[[0, 1, 2]]
 
 .. figure:: ./images/employees-bad-out.png
     :width: 1000px
@@ -561,7 +561,7 @@ any other value when testing with the ``==`` operator.
 
 **In-Class Exercise.** 
 
-1. Read the *employees_bad.csv* file into a DataFrame, and select the NaN value from the 0th row.
+1. Read the ``employees_bad.csv`` file into a DataFrame, and select the NaN value from the 0th row.
 
 2. Confirm that the NaN value from the 0th row is not ``==`` to the numpy ``nan`` value. 
 
