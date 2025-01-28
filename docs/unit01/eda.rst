@@ -3,7 +3,7 @@ Introduction to Exploratory Data Analysis and Pre-Processing
 
 As we will emphasize throughout the semester, having a basic familiarity and 
 understanding of the dataset you are working with will be important for making 
-decisions about what and how to analyze it, and the success of machine learning algorithms
+decisions about how to analyze it, and the success of machine learning algorithms
 will depend in large part on having prepared the data to ensure it has certain qualities. 
 
 In this unit, we introduce an initial set of data analysis and pre-processing 
@@ -45,7 +45,7 @@ For example:
    # how big is the file? 
    $ ls -lh used_cars_data.csv 
    -rw-r--r-- 1 root root 15K Jan 19 19:14 used_cars_data.csv
-   # it's a 839K file.. not too big
+   # it's a 15K file.. not too big
 
    # is it really text? 
    $ file used_cars_data.csv 
@@ -133,7 +133,7 @@ We'll use ``info()`` to get the column types that were inferred:
    memory usage: 10.4+ KB
 
 We see a mix of ints and objects (e.g., strings). The column names all look 
-like legitimate header names, though some could be a little mysterious (e.g., "id."). 
+like legitimate header names, though some could be a little mysterious (e.g., "ext_col"). 
 
 We see that most of the columns have 101 non-null values. There are missing or null values in some columns that would need a
 separate treatment.
@@ -288,12 +288,21 @@ Recall from the previous module the ``astype()`` function, for casting to a spec
 
 .. code-block:: python3
 
-   cars['engine'] = cars['engine'].str.extract(r'(\d+(\.\d+)?)')[0].astype(float).astype(float)
+   cars['engine'] = cars['engine'].str.extract(r'(\d+(\.\d+)?)')[0].astype(float)
 
 
-Regular Expression ``(r'(\d+(\.\d+)?)')``:
-``\d+`` matches one or more digits (i.e., the whole number part of the horsepower).
-``(\.\d+)?`` optionally matches the decimal point followed by one or more digits, allowing for float values (like 375.0).
+Within the regular expression ``(r'(\d+(\.\d+)?)')``, the ``'r`` indicates that this is a 
+regular expression and not a normal string (this has important consequences for how escape 
+characters are interpreted. The first 
+``\d+`` part matches one or more digits (i.e., the whole number part of the horsepower).
+The second part,``(\.\d+)?``, optionally matches the decimal point followed by one or more 
+digits, allowing for float values (like 375.0).
+
+.. note::
+
+   For background on regular expressions, see the Python 
+   `re module documentation <https://docs.python.org/3/library/re.html>`_.
+
 After executing the above code, we can then check that the ``engine`` column was indeed converted:
 
 
@@ -338,18 +347,10 @@ We can also check several values of the column to see that indeed the string hav
    100	250.0
    101 rows × 1 columns dtype: float64
 
-.. warning:: 
-
-   You will not be able to cast the values in a Pandas Series to ``int`` if the column contains 
-   missing values. 
-
 
 
 Categorical Values 
 ^^^^^^^^^^^^^^^^^^^
-
-We see that there are many columns in the dataset that are categorical, example ``fuel_type``, ``transmission``, ``int_col``,
-``ext_col``, ``accident``, etc.
 
 Looking at some of these columns which have type object, we see that the 
 first few objects (``fuel_type``, ``transmission``, and ``accident``) are all non-numeric; 
@@ -562,7 +563,8 @@ For example:
 
 Replacing Missing Values with Pandas 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This is a simple approach of filling the missing values with the mean. 
+
+A simple approach of filling the missing values is to use the mean. 
 The ``fillna()`` function works on a Series or DataFrame and takes the 
 following arguments: 
 
@@ -571,8 +573,12 @@ following arguments:
 
 You can read more about the function in the documentation [2]. 
 
+However, for the ``fuel_type`` column, it doesn't make sense to use a mean directly, as
+the data are categorical as we have previously mentioned. We'll need a more invovled 
+strategy. Instead of using the mean, our strategy will be to replace a missing ``fuel_type``
+with the ``fuel_type`` value of a "similar" car.
 
-Fill in the missing values for the ``fuel_type`` column using Pandas ``groupby`` 
+To do that, we need to introduce and use the Pandas ``groupby`` function.
 
 The ``groupby`` function is a powerful method for grouping together rows in a DataFrame that
 have the same value for a column. Its most simplistic form looks like this: 
@@ -581,10 +587,17 @@ have the same value for a column. Its most simplistic form looks like this:
 
    >>> df.groupby(['<some_column>']).*additional_functions()*
 
-What constitutes "similar"? There are many ways we could try to define it. 
+For example, we can compute the mean of the cars from the same year as follows:
 
-In this case, we'll say that two cars are "similar" if they have the same values for some of the features. 
-For example, we could say two cars are similar if they have the same model. 
+.. code-block:: python3 
+
+   >>> cars.groupby(['model_year'])['price'].mean()
+
+   model_year
+   1993    90200.000000
+   1999     8950.000000
+   2001     7850.000000
+   2002    11500.000000
 
 We can also use ``groupby`` to group rows by multiple columns -- we simply list additional column names, like so: 
 
@@ -598,6 +611,11 @@ it further divides them into ``column_2`` values, and so on.
 This is exactly what we want for boolean column created from categorical data using One-Hot Encoding: the 
 boolean columns will have no overlap. 
   
+How should we define "similar" to treat the missing ``fuel_type`` values? 
+There are many ways we could try to define it. In this case, we'll say that two cars are "similar" 
+if they have the same values for some of the features. 
+For example, we could say two cars are similar if they have the same model. 
+
 
 **In-Class Exercise.** Let's fill in the missing values for ``fuel_type`` by setting a missing car's fuel_type to 
 be the mode of car brand for all other cars. 
