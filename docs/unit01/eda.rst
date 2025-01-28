@@ -940,7 +940,10 @@ We can also use a different number of bins with ``histplot``. The following code
     :align: center
 
 If we look at the ``price`` column, the histogram reveals a very skewed distribution with a very 
-long tail: 
+long tail. We set the ``kde=True`` to instruct Seaborn to 
+compute a "kernel density estimate", i.e., a smooth plot approximating the distribution 
+as (one or more) line(s). You can read more in the 
+`histplot documentation <https://seaborn.pydata.org/generated/seaborn.histplot.html>`_.
 
 .. code-block:: python3 
 
@@ -956,7 +959,11 @@ Count Plots
 ^^^^^^^^^^^^
 
 Count plots are the second type of useful plot we will introduce. Count plots are used for 
-categorical data in the same way that histograms are for numeric data. 
+categorical data in the same way that histograms are for numeric data. We're also using the 
+``plt`` object from ``matplotlib`` to adjust the tick marks (the ``ha`` attribute adjusts the 
+horizontal alignment). 
+You can read more from 
+the `countplot documentation  <https://seaborn.pydata.org/generated/seaborn.countplot.html>`_.
 
 .. code-block:: python3 
 
@@ -991,7 +998,7 @@ labeled box plot:
 
 Here are some key points about the box plot: 
 
-* The median is the median (or centre point), also called second quartile, of the data 
+* The median is the middle point (or centre point), also called second quartile, of the data 
   (resulting from the fact that the data is ordered).
 * Q1 is the first quartile of the data, i.e., 25% of the data lies between minimum and Q1.
 * Q3 is the third quartile of the data, i.e., 75% of the data lies between minimum and Q3.
