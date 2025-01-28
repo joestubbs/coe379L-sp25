@@ -616,13 +616,33 @@ There are many ways we could try to define it. In this case, we'll say that two 
 if they have the same values for some of the features. 
 For example, we could say two cars are similar if they have the same model. 
 
+To do this, we'll need to introduce one more pandas function, the ``transform`` function. The ``transform``
+function works on a dataframe by taking a Python function as an argument and applying it to the dataframe.
 
-**In-Class Exercise.** Let's fill in the missing values for ``fuel_type`` by setting a missing car's fuel_type to 
-be the mode of car brand for all other cars. 
+For example, if we wanted to convert the mileage column to "thousands of miles", we could use ``transform``
+to divide every mileage value by 1000. Note that we need to use ``groupby`` and then ``['mileage']`` to ensure 
+that the ``transform`` works on a ``SeriesGroupBy`` data structure; the ``transform`` function cannot typically 
+work directly on a ``Series`` object. 
 
-Note: Ideally, we should have chose ``model`` as the groupby feature. However,
-since the dataset is small, we did not have enough information of same model types that were missing data and we had go with
-brand. This might affect the analysis in some situations so we need to be bit careful.
+Note also that we can use "anonymous" functions defined directly inline using the ``lambda`` keyword:
+
+.. code-block:: python3
+   
+   >>> cars.groupby(['mileage'])['mileage'].transform(lambda x: x/1000)
+
+Note that a ``transform`` like the above does not actually change the dataframe; to modify the values, we'll 
+need to set the column equal to the returned result. 
+
+**In-Class Exercise.** Let's fill in the missing values for ``fuel_type`` by setting a missing car's 
+``fuel_type`` to be the ``fuel_type`` of other cars of the same brand. Since there might be more than one 
+``fuel_type`` value for a brand, lets use the ``mode`` (i.e., the value that occurs most frequently).
+
+.. note:: 
+
+   You might be thinking that we should have chosen ``model`` as the groupby feature. 
+   However, since the dataset is small, we did not have enough information of same model types 
+   that were missing data and we had go with brand. This might affect the analysis in some 
+   situations so we need to be bit careful.
 
 *Solution:*
 
