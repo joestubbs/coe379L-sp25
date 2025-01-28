@@ -227,6 +227,12 @@ it changes the existing DataFrame instead of creating a new one.
   (101, 12)
 
 
+.. warning:: 
+
+   Be conservative when dropping columns you think might be irrelevant. In general, it is very 
+   difficult to identify columns that will not be useful for machine learning models. 
+
+
 You can read more about ``drop()`` from the documentation [1]. 
 
 Type Conversions
@@ -650,8 +656,10 @@ need to set the column equal to the returned result.
 
    cars['fuel_type'] = cars.groupby(['brand'])['fuel_type'].transform(lambda x: x.fillna(x.mode()[0]if not x.mode().empty else ''))
 
+We can verify that the missing values were replaced: 
 
 .. code-block:: python3 
+   :emphasize-lines: 6
 
    >>> cars.isnull().sum()
    brand	0
@@ -667,7 +675,9 @@ need to set the column equal to the returned result.
    clean_title	0
    price	0
 
-Here's how that looks for the ``fuel_Type`` column. First, we do the cast: 
+With categorical data, it's a good practice to use the ``astype("category")`` function to ensure 
+Pandas treats the data as categorical. 
+Here's how that looks for the ``fuel_Type`` column: 
 
 .. code-block:: python3 
 
@@ -676,9 +686,10 @@ Here's how that looks for the ``fuel_Type`` column. First, we do the cast:
 Using ``info()`` we see the column was converted: 
 
 .. code-block:: python3 
+   :emphasize-lines: 12
 
    >>> cars.info()
-
+   
    <class 'pandas.core.frame.DataFrame'>
    RangeIndex: 101 entries, 0 to 100
    Data columns (total 12 columns):
@@ -699,12 +710,14 @@ Using ``info()`` we see the column was converted:
    dtypes: category(1), float64(1), int64(3), object(7)
    memory usage: 9.1+ KB
 
-We can get rid of missing values in ``int_col`` in a simpler way as this is not a very important column of the dataset: 
+We may decide to use a simpler method to resolve the missing values in ``int_col``. For example, 
+we could set all of the missing values to ``black`` using the following code:  
 
 .. code-block:: python3 
 
-   cars['int_col'].fillna('black', inplace=True)
+   >>> cars['int_col'] = cars['int_col'].fillna('black')
 
+Now, all the missing values have now been taken care of:
 
 .. code-block:: python3 
 
@@ -730,10 +743,9 @@ We can get rid of missing values in ``int_col`` in a simpler way as this is not 
    dtypes: category(1), float64(1), int64(3), object(7)
    memory usage: 9.1+ KB
 
-All the missing values have now been taken care of.
 
 We will now use the ``pandas.get_dummies()`` function to convert the categorical columns to a set of 
-bit columns. Notes on the ``get_dummies()`` function:
+bit columns (i.e., a form of one-hot encoding). Notes on the ``get_dummies()`` function:
 
 * It lives in the global pandas module space -- reference it as ``pd.get_dummies()``
 * It takes a DataFrame as input. 
@@ -828,7 +840,7 @@ Here are some important parameters to ``drop_duplicates``:
 
 Univariate Analysis
 ~~~~~~~~~~~~~~~~~~~
-In univariate analysis we explore each column of variable of the dataset independently with the purpose 
+In univariate analysis we explore each column (or variable) of the dataset independently with the purpose 
 of understanding how the values are distributed. It also helps identify potential problems with the data, 
 such as impossible values, as well as to identify *outliers*, or values that differ significantly from 
 all other values. 
