@@ -890,7 +890,7 @@ We can also use graphical tools for this purpose.
    The ``describe`` function only works on numeric data. This is another check that you have prepared
    the dataframe correctly. In our case, we only have four columns because we have not properly treated 
    the others. In your projects, you should treat all of the data. 
-   
+
 
 Matplotlib and Seaborn 
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -1111,6 +1111,13 @@ What are some observations we can make based on the heat map?
 
    If you are running version 0.12.x of seaborn, you may numeric values along only the 
    top row, due to a bug in seaborn. Updating to 0.13.x fixes the issue. 
+
+
+Take-Home Exercise.
+~~~~~~~~~~~~~~~~~~~
+Perform data pre-processing on the remaining columns of the cars dataframe. What kinds of methods
+will you need to employ? What kinds of data types are present? Will you need to perform any type 
+conversions? How will you verify your work?
 
 
 References and Additional Resources
