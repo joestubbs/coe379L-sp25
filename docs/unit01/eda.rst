@@ -536,7 +536,6 @@ Another way to check for nulls is to use the ``isnull()`` method together with `
    clean_title	0
    price	0
 
-dtype: int64
 
 Strategies for Missing Values 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -604,6 +603,7 @@ For example, we can compute the mean of the cars from the same year as follows:
    1999     8950.000000
    2001     7850.000000
    2002    11500.000000
+   . . .
 
 We can also use ``groupby`` to group rows by multiple columns -- we simply list additional column names, like so: 
 
@@ -622,7 +622,7 @@ There are many ways we could try to define it. In this case, we'll say that two 
 if they have the same values for some of the features. 
 For example, we could say two cars are similar if they have the same model. 
 
-To do this, we'll need to introduce one more pandas function, the ``transform`` function. The ``transform``
+To do this, we'll need to introduce one more pandas function. The ``transform``
 function works on a dataframe by taking a Python function as an argument and applying it to the dataframe.
 
 For example, if we wanted to convert the mileage column to "thousands of miles", we could use ``transform``
@@ -635,6 +635,13 @@ Note also that we can use "anonymous" functions defined directly inline using th
 .. code-block:: python3
    
    >>> cars.groupby(['mileage'])['mileage'].transform(lambda x: x/1000)
+
+   0       74.349
+   1       80.000
+   2       91.491
+   3        2.437
+   4      111.000
+           ...   
 
 Note that a ``transform`` like the above does not actually change the dataframe; to modify the values, we'll 
 need to set the column equal to the returned result. 
@@ -654,7 +661,7 @@ need to set the column equal to the returned result.
 
 .. code-block:: python3 
 
-   cars['fuel_type'] = cars.groupby(['brand'])['fuel_type'].transform(lambda x: x.fillna(x.mode()[0]if not x.mode().empty else ''))
+   cars['fuel_type'] = cars.groupby(['brand'])['fuel_type'].transform(lambda x: x.fillna(x.mode()[0]))
 
 We can verify that the missing values were replaced: 
 
@@ -877,6 +884,13 @@ the data indicate that:
 You can find many more interesting insights from the data.
 
 We can also use graphical tools for this purpose. 
+
+.. note:: 
+
+   The ``describe`` function only works on numeric data. This is another check that you have prepared
+   the dataframe correctly. In our case, we only have four columns because we have not properly treated 
+   the others. In your projects, you should treat all of the data. 
+   
 
 Matplotlib and Seaborn 
 ^^^^^^^^^^^^^^^^^^^^^^
