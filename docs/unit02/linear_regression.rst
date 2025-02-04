@@ -196,7 +196,8 @@ So, it turns out we can find the model that minimizes the cost by finding the ze
 
    The discussion above ignores a lot of details. In practice, a number of additional issues come up.
    Moreover, there is the matter of how to actually find the zeros of a differentiable function. If 
-   you are interested, the Gradient Decent algorithm is a general purpose optimization algorithm for 
+   you are interested, the Ordinary Least Squares (OLS) algorithm gives an exact solution while 
+   the Gradient Decent algorithm is a general purpose optimization algorithm for 
    finding the minimum of a differential function. We may provide some details of the Gradient Decent 
    algorithm later in the semester, time permitting. 
 
