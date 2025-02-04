@@ -277,8 +277,8 @@ additional properties:
 We can predict the values using the model's ``.predict()`` function. In general, the 
 ``predict()`` function takes an array of values to predict and returns an array of predictions.
 
-Note also that that the sklearn LinearRegression model is designed for the general 
-case where one has multiple independent and dependent variables. Therefore, when calling
+Note again that since the sklearn LinearRegression model is designed for the general 
+case where one has multiple independent and dependent variables, when calling
 ``predict()``, we must pass each set of independent variables as an array, even if there is 
 only one variable/value.
 
