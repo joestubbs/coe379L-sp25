@@ -22,7 +22,6 @@ accommodations can be made. Please notify us as soon as possible if you have suc
 For this project, you will use a dataset about breast cancer available from the class git repository.
 It can be downloaded here: `Project 1 Dataset <https://raw.githubusercontent.com/joestubbs/coe379L-sp25/master/datasets/unit01/project1.csv>`_
 
-This data set provides 
 
 **Part 1 (6 points):** Your objective is to perform Exploratory data analysis on the dataset.
 Complete the following:
@@ -61,7 +60,7 @@ To submit your project, send an email with the following information:
 .. code-block:: bash 
 
     Subject: COE 379L Project 1 Submission
-    To: jstubbs@tacc.utexas.edu, ajamthe@tacc.utexas.edu,  rohanpotru@utexas.edu
+    To: jstubbs@tacc.utexas.edu, ajamthe@tacc.utexas.edu, hainguyen@utexas.edu
 
     Body: Please include the following: 
       1) GitHub Repo Link 
