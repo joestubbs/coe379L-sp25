@@ -87,8 +87,8 @@ You can see a list of all of the packages installed in the
 (and by the way, if you don't know about Python Poetry, `check it out <https://python-poetry.org/>`_!)
 
 
-Jupyter Notebooks via SSH Tunnels 
-----------------------------------
+Jupyter Notebooks
+-----------------
 
 Jupyter notebooks are a popular computational environment for "interactive" computing, and we'll make extensive 
 use of them during the course. In order to use Jupyter notebook running on your VM. We've set up some 
