@@ -369,29 +369,13 @@ We can check that our DataFrame has what we expect:
 .. code-block:: python3 
 
     >>> cars.info()
-    <class 'pandas.core.frame.DataFrame'>
-    RangeIndex: 7178 entries, 0 to 7177
-    Data columns (total 16 columns):
-    #   Column                     Non-Null Count  Dtype  
-    ---  ------                     --------------  -----  
-    0   Name                       7178 non-null   object 
-    1   Location                   7178 non-null   object 
-    2   Year                       7178 non-null   int64  
-    3   Kilometers_Driven          7178 non-null   int64  
-    4   Mileage                    7178 non-null   float64
-    5   Engine                     7178 non-null   float64
-    6   Power                      7178 non-null   float64
-    7   Seats                      7178 non-null   float64
-    8   New_Price                  7178 non-null   float64
-    9   Price                      7178 non-null   float64
-    10  Fuel_Type_Electric         7178 non-null   bool   
-    11  Fuel_Type_Petrol           7178 non-null   bool   
-    12  Transmission_Manual        7178 non-null   bool   
-    13  Owner_Type_Fourth & Above  7178 non-null   bool   
-    14  Owner_Type_Second          7178 non-null   bool   
-    15  Owner_Type_Third           7178 non-null   bool   
-    dtypes: bool(6), float64(6), int64(2), object(2)
-    memory usage: 603.0+ KB
+
+      <class 'pandas.core.frame.DataFrame'>
+      RangeIndex: 101 entries, 0 to 100
+      Columns: 163 entries, model_year to int_col_–
+      dtypes: bool(157), float64(1), int64(4), object(1)
+      memory usage: 20.3+ KB
+
 
 To use ``fit()``, we need to pass it the independent and dependent variables. If we are trying to 
 predict ``Price``, what are the dependent and independent variables? 
@@ -407,10 +391,12 @@ the DataFrame.
 
 .. code-block:: python3
 
-    >>> X = cars.drop(["Name", "Location", "Price"], axis=1)
-    >>> Y = cars["Price"]
-    >>> cars_lr = linear_model.LinearRegression()
-    >>> cars_lr.fit(X, Y)
+   >>> from sklearn import linear_model
+   >>> X = cars.drop(["price"], axis=1)
+   >>> Y = cars["price"]
+
+   >>> cars_lr = linear_model.LinearRegression()
+   >>> cars_lr.fit(X, Y)
 
     # be careful of the shape of the object that you pass to predict()
     # predict one value... 
@@ -421,4 +407,4 @@ the DataFrame.
 
     # How do they compare to the actual values?
     >>> print(f"estimated value for car 0: {cars_lr.predict(X.iloc[0:1])}, actual value for car 0: {Y.iloc[0]}")
-
+    >>> print(f"estimated value for first 5 cars: {cars_lr.predict(X.iloc[0:5])}, actual value for first 5 cars: {Y.iloc[0], Y.iloc[1], Y.iloc[2], Y.iloc[3], Y.iloc[4]}")
