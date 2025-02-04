@@ -36,7 +36,7 @@ Complete the following:
 * Visualize the dataset through different univariate analysis and comment on your observations (2)
 * Perform one-hot encoding on categorical variables (1 point)
 
-**Part 2 (9 points):** Fit Regression models on the data to predict the fuel efficiency of cars:
+**Part 2 (9 points):** Fit Classification models on the data to predict the recurrence class:
 
 * Split the data into training and test datasets. Make sure your split is reproducible and 
   that it maintains roughly the proportion of each class of dependent variable. (1 point)
@@ -52,7 +52,7 @@ Complete the following:
 * What did you do to prepare the data?
 * What insights did you get from your data preparation?
 * What procedure did you use to train the model? 
-* How does the model perform to predict the fuel efficiency?
+* How does the model perform to predict the class?
 * How confident are you in the model?
 
 **Submission Guidelines:**
