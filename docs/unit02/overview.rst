@@ -8,3 +8,5 @@ techniques for supervised learning.
    :maxdepth: 1
 
    ml_intro
+   linear_regression
+   linear_classification
