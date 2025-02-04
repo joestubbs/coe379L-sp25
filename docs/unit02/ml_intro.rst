@@ -92,7 +92,11 @@ Unsupervised learning techniques are powerful because they do not require labell
 be a time-consuming process, at best, and one that requires an expert to distinguish different 
 label values (e.g., the difference between a healthy and diseased crop). 
 
-Nevertheless, due to time constraints we will focus on supervised learning in this course.
+Semi-supervised learning is a third approach that combines both labeled and unlabeled data. 
+For example, one might start with a small set of labeled data, use that to do initial training of 
+a model that then generates labels for the unlabeled data. 
+
+Nevertheless, due to time constraints we will focus mostly on supervised learning in this course.
 
 
 Model Variables, Classification and Regression
