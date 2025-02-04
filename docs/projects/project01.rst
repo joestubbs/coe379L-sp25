@@ -22,6 +22,7 @@ accommodations can be made. Please notify us as soon as possible if you have suc
 For this project, you will use a dataset about breast cancer available from the class git repository.
 It can be downloaded here: `Project 1 Dataset <https://raw.githubusercontent.com/joestubbs/coe379L-sp25/master/datasets/unit01/project1.csv>`_
 
+This data set has 9 attributes/features and 1 dependent/target variable to determine recurrence of breast cancer in patients. 
 
 **Part 1 (6 points):** Your objective is to perform Exploratory data analysis on the dataset.
 Complete the following:
