@@ -398,13 +398,13 @@ the DataFrame.
    >>> cars_lr = linear_model.LinearRegression()
    >>> cars_lr.fit(X, Y)
 
-    # be careful of the shape of the object that you pass to predict()
-    # predict one value... 
-    >>> cars_lr.predict(X.iloc[0:1])
+   # be careful of the shape of the object that you pass to predict()
+   # predict one value... 
+   >>> cars_lr.predict(X.iloc[0:1])
 
-    # predict a set of values
-    >>> cars_lr.predict(X.iloc[0:10])
+   # predict a set of values
+   >>> cars_lr.predict(X.iloc[0:10])
 
-    # How do they compare to the actual values?
-    >>> print(f"estimated value for car 0: {cars_lr.predict(X.iloc[0:1])}, actual value for car 0: {Y.iloc[0]}")
-    >>> print(f"estimated value for first 5 cars: {cars_lr.predict(X.iloc[0:5])}, actual value for first 5 cars: {Y.iloc[0], Y.iloc[1], Y.iloc[2], Y.iloc[3], Y.iloc[4]}")
+   # How do they compare to the actual values?
+   >>> print(f"estimated value for car 0: {cars_lr.predict(X.iloc[0:1])}, actual value for car 0: {Y.iloc[0]}")
+   >>> print(f"estimated value for first 5 cars: {cars_lr.predict(X.iloc[0:5])}, actual value for first 5 cars: {Y.iloc[0], Y.iloc[1], Y.iloc[2], Y.iloc[3], Y.iloc[4]}")
