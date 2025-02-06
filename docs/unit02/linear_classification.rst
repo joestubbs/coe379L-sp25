@@ -103,69 +103,47 @@ points not in :math:`C`.
 Perceptron Algorithm 
 ~~~~~~~~~~~~~~~~~~~~
 We'll begin by looking at the Perceptron Algorithm which was originally conceived of by Frank Rosenblatt 
-in his 1956 PhD thesis [2]. For linear classifiers, it can be slow to train, 
+in his 1956 PhD thesis [2]. It can be slow to train, 
 but it can be proven mathematically to always find a correct linear classifier when the data are 
-linearly separable. Our derivation will feel similar to the treatment of Linear Regression we gave in the
-previous module. 
+linearly separable. 
 
-Let :math:`X_1, ..., X_n` be :math:`n` different data points in our training set. Since we know the *labels*
-for each of the points, we define :math:`y_1, ..., y_n` as follows:
-
-.. math::
-
-    y_i := 1 \iff X_i \in C
-
-    y_i := -1 \iff X_i \not\in C
-
-
-Our goal is to find the optimal choices of :math:`m` and :math:`b`. For simplicity, we'll assume that 
-:math:`b=0` (i.e., that the line goes through the origin) just like we did with Linear Regression. 
-
-Therefore, we want to find a choice of :math:`m` so that: 
+Let us try to describe the Percetron Algorithm at a high level. 
+Let :math:`X` denote the input features. In general, :math:`X=[x_1, ..., x_n]` live in an :math:`n`-dimensional
+space; i.e., consists of :math:`n`-dimensional feature vectors.  The Perceptron Algorithm learns 
+a set of *weights*, :math:`W=[w_1, ..., w_n]` as well as a *bias* term, :math:`b`, and defines a decision
+function, as follows:
 
 .. math:: 
 
-  mX_i > 0 \textrm{ if } y_i = 1
+  f(X) = W^T X + b 
 
-  mX_i <= 0 \textrm{ if } y_i = -1
+To classify a point :math:`x\in X`, we check the sign of :math:`f(x)` --- if :math:`f(x)< 0` we classify 
+:math:`x` as Class 1, and if :math:`f(x)>0` we classify as :math:`x` as Class 2.
 
+The idea behind the algorithm is to iteratively compute the function :math:`f` on the inputs and 
+update the values of :math:`W` based on two simple rules:
 
-In other words, we want to choose :math:`m` so that :math:`mX_i` and :math:`y_i` have the same sign for 
-all :math:`1 <= i <= n`.
+**Rule 1.** If :math:`f(x)` correctly assigns the class label, then do not change :math:`W`.
 
-This gives us an idea for how we can define a loss function and associated cost function.
-For any classifier, we define a *loss function* (or error function), :math:`L(mX_i, y_i)`, 
-as:
+**Rule 2.** If :math:`f(x)` incorrectly assigns the class label, then update the :math:`W` 
+as follows: :math:`w_i := w_i + α∗y ∗ x_i`. Here, :math:`y` is the correct class label (i.e., -1 or 1)
+and :math:`alpha` is a term called the *learning rate*. 
 
-.. math:: 
+**Theorem.** (Perceptron Convergence Theorem) If the input data is linearly separable, then the 
+algorithm described above learns a "correct" :math:`W` in a finite set of steps. In other words, it 
+learns a function, :math:`f(X)`, that correctly classifies all points in the inputs space after 
+a finite set of updates. 
 
-    L(mX_i, y_i) := 0 \textrm{ if } mX_i \textrm{ and } y_i \textrm{ have the same sign.}
+We will not try to prove this theorem at this time, but we could give a proof in a future lecture. The
+idea of the proof is to bound the total number of updates above and below and show that these two bounds 
+converge. 
 
-    L(mX_i, y_i) := -m X_i y_i \textrm{ otherwise}
-
-Note that the loss function is 0 when the model predicts the correct class for :math:`X_i` and the loss
-function is positive otherwise. 
-
-The cost function can now be defined as an average of the loss function over all points :math:`X_i`
-(this is similar to what we did for linear regression). The cost function, :math:`C(m)`, associated 
-with a linear classifier given by :math:`m`, is defined:
-
-
-.. math::
-
-    C(m) := \frac{1}{n} \sum_{i=1}^n L(mX_i, y_i) = \frac{1}{n} \sum_{d\in D} -m X_d y_d
-
-where :math:`D` is the set of points which are misclassified by the classifier.
-
-But the :math:`X_d` are all data points from our training set, and each of the :math:`y_d` are 
-either 1 or -1, so this is a simple linear equation in :math:`m`. An optimization algorithm like 
-Gradient Decent can be used to find an optimal :math:`m`. 
 
 Linear Classification with Scikit Learn
 ---------------------------------------
 Next we look at implementing a linear classifier using the ``sklearn`` package. In this first example, we'll 
 illustrate the techniques on a classic dataset that describes iris flowers. We'll also introduce
-helper functions for splitting data into a training data and testing data and computing the accurary of our
+helper functions for splitting data into a training data and testing data and computing the accuracy of our
 trained models. 
 
 First, let us begin with a description of our dataset. The Iris Flower Dataset or Fisher's Iris Dataset was published
