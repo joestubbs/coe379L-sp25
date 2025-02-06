@@ -312,7 +312,7 @@ Naturally, we use the training data when calling ``fit``:
 
     from sklearn.linear_model import SGDClassifier
 
-    # the alpha is used for the learning rate, which can impact overfitting vs underfitting, 
+    # the alpha is multiplied by the regularization term, which can impact overfitting vs underfitting, 
     # something we haven't discussed yet, but just note that a higher value of alpha more likely
     # to underfit. Can try changing alpha=0.05 if the model doesn't achieve 100% accuracy. 
     clf = SGDClassifier(loss="perceptron", alpha=0.01)
@@ -333,7 +333,7 @@ The ``clf`` object is the trained model, and it can be used to predict the speci
 Validation 
 ~~~~~~~~~~
 Now that the model has been trained we can proceed to step 3 -- validation. Our goal here is to compute the 
-accuracy of our model against the test dataset (i.e., the ``test_`` data objects above). We'll also compute 
+accuracy of our model against the test dataset (i.e., the ``test_*`` data objects above). We'll also compute 
 the accuracy of the model against the training data to see how they compare. 
 
 For validation, we'll make use of another helpful function: the ``accuracy_score`` from the ``sklearn.metrics``
@@ -350,7 +350,7 @@ module. The basic usage is straightforward:
     accuracy_train=accuracy_score(y_train, clf.predict(X_train))
 
 As suggested by the code above, the ``accuracy_score`` function takes two parameters: the target (dependent)
-variables and the predictions on the independent variables. Our dependent variables are just the 
+variables (i.e., the predictions) and the independent variables. Our dependent variables are just the 
 ``y_test`` and ``y_train`` objects defined before, and for the preduction, we apply the ``clf.predict`` function 
 to each of the ``X_test`` and ``X_train`` arrays, respectively. 
 
