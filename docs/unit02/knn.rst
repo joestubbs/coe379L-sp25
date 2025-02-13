@@ -90,7 +90,7 @@ the closest :math:`k` data points in the training set, for some integer, :math:`
 of just the single closest data point in the training set. 
 
 To classify a sample, we look at the classifications of the :math:`k` closest data points in the 
-training set, and we predict the class which occurrence most often (with some tie breaker).
+training set, and we predict the class which occurs most often (with some tie breaker).
 
 Of course, with :math:`k=1` we recover the 1-Nearest Neighbor algorithm, so this is a strict 
 generalization. 
@@ -117,10 +117,7 @@ Hyperparameters
 The parameter :math:`k` in the Nearest Neighbor model is an example of what is called a *hyperparameter*;
 that is, it is a parameter of the model that is **not** derived as part of the training/fitting process.
 Instead, the value of :math:`k` must be provided before fitting the model. 
-
-Some models, such as the linear classifier we looked at previously, do not have any hyperparameters --
-the weights of the model were all learned as part of the least squares gradient descent. Most models 
-though will have some hyperparameters to control for overfitting. 
+Virtually all models will have some hyperparameters to control for overfitting. 
 
 How can we figure out which value of :math:`k` we should use for our model?
 

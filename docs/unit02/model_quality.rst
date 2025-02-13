@@ -35,7 +35,7 @@ Furthermore, accuracy can be a poor measure of a model in cases where the datase
 
 For example, we looked at spam email detection in the last unit. Our model tried to determine if an email was 
 spam or not. There are four cases, two cases where our model predicts correctly and two cases where it 
-does now: 
+does not: 
 
 Correct: 
 
@@ -64,7 +64,7 @@ The medical field provides another set of examples. Usually (though not always),
 avoid missing an illness diagnosis than it is to diagnose an illness that is not there. 
 
 For example, consider a preliminary screening based on an ML model that analyzes 
-patient history to determine if they might have diabetes and referes them for follow-up tests. Again,
+patient history to determine if they might have diabetes and refers them for follow-up tests. Again,
 there are two possible ways the model can fail:
 
 1. The patient has diabetes but the model predicts that they do not. 
@@ -81,7 +81,7 @@ could be inconvenient and monetarily costly but does not risk human life.
 
 Suppose we wanted to build a ML model to predict whether a high school athlete will go on to win 
 an olympic gold medal. Since winning a gold medal at the olympics is an extremely rare event, our 
-model would probably score a pretty high accuracy by simply predicting every student to *not* win 
+model would probably score a high accuracy by simply predicting every student to *not* win 
 a medal. Even though this would result in a high accuracy, it would typically not achieve the 
 desired results. In particular, our model would not be utilizing any learned pattern from prior 
 data. 
