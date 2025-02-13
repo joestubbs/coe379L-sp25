@@ -171,6 +171,11 @@ Note that since precision and recall are both fractions less than 1, their inver
 worse the precision or recall (i.e., the smaller the value), the larger their inverses and therefore the 
 worse the :math:`F_1` score. 
 
+Note also that the :math:`F_1` score values precision and recall equally: increasing or decreasing 
+either precision or recall has the same ultimate effect on the :math:`F_1` score. Therefore, the 
+:math:`F_1`  score does not favor true positives or true negatives nor penalize more false positives 
+or false negatives.
+
 When would it be appropriate to use *F*-score for a model? Since *F*-score averages precision and 
 recall, it can be a good choice in cases where accuracy would be misleading -- e.g., with an imbalanced
 data set -- but there is no preference for precision or recall. Predicting a "rare" event, such as 
