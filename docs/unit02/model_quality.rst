@@ -218,6 +218,40 @@ test dataset as compared to 73%. This agrees with our confusion matrix where we 
 there were more false positives than false negatives. 
 
 
+Why Does :math:`F_1` Use the Harmonic Mean and Not the Arithmetic Mean?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This good question was raised by a student in class, so we wanted to try and provide some 
+intuition. The idea behind :math:`F_1` is to provide a metric that: 
+
+* Is close to the precision and recall scores when they are close to each other in value. 
+* Will be close to the lower value of precision and recall whenever they are far apart. 
+
+This will be useful for imbalanced datasets.
+We can look at a specific example to make things concrete. 
+
+Suppose we have dataset with 100 samples and a "rare" class where only 5 samples are in the class 
+(so, 95 samples are not in the class). Let's further suppose we have a model that makes a 50-50 
+guess as to whether the sample is in the class. Even in the best possible case, this model will 
+get all 5 samples correct and 45 samples wrong. Therefore, the TP, FP, and FN will be:
+
+* TP = 5 
+* FP = 45 
+* FN = 0
+
+Thus, we have these values for precision and recall: 
+
+* Recall = 5/5 = 1.0
+* Precision = 5/(5+45) = 5/50 = 0.1
+
+These numbers are very different from each other, and intuitively we would probably think 
+of this model as a poor performer (it just makes a 50/50 guess). However, let's look at the 
+scores: 
+
+* Accuracy = 55/100 = .55 
+* Arithmetic Mean of Precision and Recall = (1 + 0.1)/2 = 0.55 
+* :math:`F_1` score (harmonic mean) = :math:`2/(1 + (0.1)^{-1}) = 2/11 = 0.18`
+
 References and Additional Resources
 -----------------------------------
 

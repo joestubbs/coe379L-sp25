@@ -167,7 +167,7 @@ and one target variable, ``Outcome``. The variables and their types are as follo
 the Pima Indian Diabetes dataset. As mentioned previously, the dataset is available for download 
 from Kaggle `here <https://www.kaggle.com/datasets/uciml/pima-indians-diabetes-database?resource=download>`_. 
 We have also put a copy on our class repository, as the Kaggle website seems to now require a login. You 
-can download the file directly from this `URL <https://raw.githubusercontent.com/joestubbs/coe379L-sp24/master/datasets/unit02/diabetes.csv>`_.
+can download the file directly from this `URL <https://raw.githubusercontent.com/joestubbs/coe379L-sp25/refs/heads/master/datasets/unit02/diabetes.csv>`_.
 The primary dataset is described in a csv file called ``diabetes.csv``.
 
 .. code-block:: python3
@@ -541,8 +541,8 @@ For example, let's look at the following code:
 
 .. code-block:: python3 
 
-  # call the predict method using the first model (knn) on the first 10 samples 
-  >>>  knn.predict(X_test.iloc[0:10])
+  
+  >>> knn.predict(X_test.iloc[0:10]) # call the predict method using the first model (knn) on the first 10 samples
   array([0, 1, 0, 0, 0, 0, 1, 1, 1, 0])
 
   # call the predict_proba method on the same samples: 
@@ -582,7 +582,7 @@ we can change the threshold so that the model predicts a negative label only whe
 To improve recall (i.e., reduce false negatives) we should decrease the decision threshold so that the 
 model is more likely to predict that a sample belongs to the "has diabetes" class. By decreasing 
 the decision threshold, in effect we require that the model be more confident that the label 
-is not in the label before predicting it as such. 
+is not in the class before predicting it as such. 
 
 We can implement a modified version of the predict function that uses an aribtrary decision 
 threshold in a straight-forward way.
@@ -718,7 +718,7 @@ We can now invoke our function with different thresholds and different models:
     for m in models:
         print(f"Model: {m}\n")
         for t in thresholds:
-            print(f"threshold: {t}"")
+            print(f"threshold: {t}")
             confusion_matrix_for_threshold(X_test, y_test, m, t)    
 
 Thus, we see that we can improve both recall and precision by adjusting the decision threshold. 
