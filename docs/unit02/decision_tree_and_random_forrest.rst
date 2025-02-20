@@ -85,8 +85,8 @@ One of the main advantages of Decision Tress is their ability to explain how the
 arrive at their classification result. 
 
 Continuing with the diabetes example above, suppose two individuals had the same 
-glucose reading of 153, but one was age of 68 and the other was age 53. If younger one 
-had a BMI of 32, then the model would predict that they were not diabetic, while it 
+glucose reading of 153, but one was age of 68 and the other was age 53. If the younger
+individual had a BMI of 32, then the model would predict that they were not diabetic, while it 
 would predict that the older one was. 
 
 A natural question could be asked: *given these two individuals with the same glucose 
@@ -146,9 +146,20 @@ enabling the results to be reproducible.
    >>> from sklearn.tree import DecisionTreeClassifier
    >>> model = DecisionTreeClassifier(random_state=1).fit(X_train, y_train)
 
+We also introduce the convenience function ``classification_report`` from the ``sklearn.metrics`` module. 
+This function produces a nice report of several measures we have looked at, including accuracy, recall, 
+precision, and f1-score. 
+
+Keep in mind when reading the output of ``classification_report`` that the values for precision, 
+recall, f1-score and support are provided for **all target class labels.** This could cause 
+confusion. We have defined these metrics essentially for the target class equal to ``1``. 
+For simplicity, you can just ignore the class 0 values. 
+
+
 We can use ``classification_report`` to get the performance:
 
 .. code-block:: python3 
+   :emphasize-lines: 10, 21
 
    from sklearn.metrics import classification_report
    print(f"Performance on TEST\n*******************\n{classification_report(y_test, model.predict(X_test))}")
@@ -299,8 +310,8 @@ if nothing else is being executed at the time, set it to the total number of cor
 .. note:: 
    
    The following code could take a pretty significant amount of time to run, from under 
-   1 minutes to more than 10 minutes or more, depending on the hardware. On my laptop, 
-   it ran in about 3 minutes. 
+   1 minutes to more than 10 minutes or more, depending on the hardware. On my class VM, 
+   it ran in about 6 and a half minutes. 
 
 .. code-block:: python3 
 
@@ -323,14 +334,22 @@ The output should look similar to:
 
 .. code-block:: bash 
 
-   {'class_weight': {0: 0.3, 1: 0.7},
+   {'class_weight': {0: 0.1, 1: 0.9},
     'max_depth': 2,
-    'min_samples_leaf': 3,
-    'n_estimators': 55
+    'min_samples_leaf': 2,
+    'n_estimators': 12
    }
 
+.. .. code-block:: bash 
+
+..    {'class_weight': {0: 0.3, 1: 0.7},
+..     'max_depth': 2,
+..     'min_samples_leaf': 3,
+..     'n_estimators': 55
+..    }
+
 If the cell is taking a long time to run on your machine, you could try 
-hard-coding the ``class_weight`` to the ``{0: 0.3, 1:0.7}`` value. 
+hard-coding the ``class_weight`` to the ``{0: 0.1, 1: 0.9}`` value. 
 From experimentation, this has seemed to always be optimal and will reduce your 
 search space some. (For example, on my computer it reduces the run time from 5 minutes 
 to 3 minutes).  
@@ -352,28 +371,28 @@ With this approach, we see a big improvement in recall:
 
    Performance on TEST
    *******************
-                 precision    recall  f1-score   support
+               precision    recall  f1-score   support
 
-              0       0.89      0.64      0.74       150
-              1       0.56      0.85      0.68        81
+            0       0.96      0.17      0.28       150
+            1       0.39      0.99      0.56        81
 
-       accuracy                           0.71       231
-      macro avg       0.72      0.75      0.71       231
-   weighted avg       0.77      0.71      0.72       231
+      accuracy                          0.45       231
+      macro avg     0.68      0.58      0.42       231
+   weighted avg     0.76      0.45      0.38       231
 
    Performance on TRAIN
    ********************
-                 precision    recall  f1-score   support
+               precision    recall  f1-score   support
 
-              0       0.92      0.65      0.76       350
-              1       0.58      0.89      0.70       187
+            0       1.00      0.14      0.24       350
+            1       0.38      1.00      0.55       187
 
-       accuracy                           0.73       537
-      macro avg       0.75      0.77      0.73       537
-   weighted avg       0.80      0.73      0.74       537
+      accuracy                          0.44       537
+      macro avg     0.69      0.57      0.40       537
+   weighted avg     0.78      0.44      0.35       537
 
-The model achieves 85% recall on the test set (and 89% on train) compared to our 
-decision tree which achieved just 58% on recall. 
+   The model achieves 99% recall on the test set (and 100% on train) compared to our 
+   decision tree which achieved just 58% on recall. 
 
 
 References and Additional Resources
