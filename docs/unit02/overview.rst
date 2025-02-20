@@ -13,3 +13,5 @@ techniques for supervised learning.
    spambase_solution
    model_quality
    knn
+   decision_tree_and_random_forrest
+   ensemble_and_boosting
