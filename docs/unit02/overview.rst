@@ -14,4 +14,4 @@ techniques for supervised learning.
    model_quality
    knn
    decision_tree_and_random_forrest
-   ensemble_and_boosting
+   .. ensemble_and_boosting
