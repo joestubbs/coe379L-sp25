@@ -138,14 +138,10 @@ instances get higher weights, so the next weak learner focuses more on these "ha
 After each weak learner is trained, the final prediction is made by a weighted combination of all the 
 weak learners' predictions, with more accurate learners receiving higher weights.
 
-AdaBoost in scikit-learn
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Let's look at implementing Adaboost in sklearn. 
-
 
 The Give Me Some Credit Kaggle Dataset
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+We're going to look at implementing Adaboost in sklearn. 
 To illustrate, we'll work with a new dataset on 
 credit defaulting. This dataset was originally part of a 3 month long Kaggle competition called 
 "Give Me Some Credit" that ran in 2011 [2]. We have made part of the data available from our 
@@ -223,23 +219,24 @@ What about missing values? We can use a method like ``info()`` to get a high-lev
    >>> data.info()
 
    <class 'pandas.core.frame.DataFrame'>
-   RangeIndex: 150000 entries, 0 to 149999
+   Index: 149391 entries, 0 to 149999
    Data columns (total 11 columns):
    #   Column                                Non-Null Count   Dtype  
    ---  ------                                --------------   -----  
-   0   SeriousDlqin2yrs                      150000 non-null  int64  
-   1   RevolvingUtilizationOfUnsecuredLines  150000 non-null  float64
-   2   age                                   150000 non-null  int64  
-   3   NumberOfTime30-59DaysPastDueNotWorse  150000 non-null  int64  
-   4   DebtRatio                             150000 non-null  float64
-   5   MonthlyIncome                         120269 non-null  float64
-   6   NumberOfOpenCreditLinesAndLoans       150000 non-null  int64  
-   7   NumberOfTimes90DaysLate               150000 non-null  int64  
-   8   NumberRealEstateLoansOrLines          150000 non-null  int64  
-   9   NumberOfTime60-89DaysPastDueNotWorse  150000 non-null  int64  
-   10  NumberOfDependents                    146076 non-null  float64
+   0   SeriousDlqin2yrs                      149391 non-null  int64  
+   1   RevolvingUtilizationOfUnsecuredLines  149391 non-null  float64
+   2   age                                   149391 non-null  int64  
+   3   NumberOfTime30-59DaysPastDueNotWorse  149391 non-null  int64  
+   4   DebtRatio                             149391 non-null  float64
+   5   MonthlyIncome                         120170 non-null  float64
+   6   NumberOfOpenCreditLinesAndLoans       149391 non-null  int64  
+   7   NumberOfTimes90DaysLate               149391 non-null  int64  
+   8   NumberRealEstateLoansOrLines          149391 non-null  int64  
+   9   NumberOfTime60-89DaysPastDueNotWorse  149391 non-null  int64  
+   10  NumberOfDependents                    145563 non-null  float64
    dtypes: float64(4), int64(7)
-   memory usage: 12.6 MB
+   memory usage: 13.7 MB
+
 
 We see that ``MonthlyIncome`` and ``NumberOfDependents`` both have missing values. 
 There are multiple ways to impute these. For now, we will use a simple scheme: 
@@ -257,27 +254,26 @@ multivariate approach?
    >>> data.info()
 
    <class 'pandas.core.frame.DataFrame'>
-   RangeIndex: 150000 entries, 0 to 149999
+   Index: 149233 entries, 0 to 149999
    Data columns (total 11 columns):
    #   Column                                Non-Null Count   Dtype  
    ---  ------                                --------------   -----  
-   0   SeriousDlqin2yrs                      150000 non-null  int64  
-   1   RevolvingUtilizationOfUnsecuredLines  150000 non-null  float64
-   2   age                                   150000 non-null  int64  
-   3   NumberOfTime30-59DaysPastDueNotWorse  150000 non-null  int64  
-   4   DebtRatio                             150000 non-null  float64
-   5   MonthlyIncome                         150000 non-null  float64
-   6   NumberOfOpenCreditLinesAndLoans       150000 non-null  int64  
-   7   NumberOfTimes90DaysLate               150000 non-null  int64  
-   8   NumberRealEstateLoansOrLines          150000 non-null  int64  
-   9   NumberOfTime60-89DaysPastDueNotWorse  150000 non-null  int64  
-   10  NumberOfDependents                    150000 non-null  float64
+   0   SeriousDlqin2yrs                      149233 non-null  int64  
+   1   RevolvingUtilizationOfUnsecuredLines  149233 non-null  float64
+   2   age                                   149233 non-null  int64  
+   3   NumberOfTime30-59DaysPastDueNotWorse  149233 non-null  int64  
+   4   DebtRatio                             149233 non-null  float64
+   5   MonthlyIncome                         149233 non-null  float64
+   6   NumberOfOpenCreditLinesAndLoans       149233 non-null  int64  
+   7   NumberOfTimes90DaysLate               149233 non-null  int64  
+   8   NumberRealEstateLoansOrLines          149233 non-null  int64  
+   9   NumberOfTime60-89DaysPastDueNotWorse  149233 non-null  int64  
+   10  NumberOfDependents                    149233 non-null  float64
    dtypes: float64(4), int64(7)
-   memory usage: 12.6 MB
+   memory usage: 13.7 MB
 
-
-Model Training and Evaluation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+AdaBoost: Model Training and Evaluation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 At this point we are ready to train a model. We'll use the standard procedure: 
 
@@ -372,6 +368,76 @@ We see the accuracy performance on TEST and TRAIN are both excellent, 94% on eac
       accuracy                           0.94    105000
       macro avg       0.77      0.57      0.61    105000
    weighted avg       0.92      0.94      0.92    105000   
+
+
+Histogram-based Gradient Boosting 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ``sklearn.ensemble.HistGradientBoostingClassifier`` class implements a Histogram-based Gradient 
+Boosting Classification Tree. The idea is to first bin the input samples into large integer bins, 
+say bins of size 256. This in turn allows the algorithm to use integer-based data strcutures (histograms)
+when trying to determine how to perform splits. As a result, these models can exhibit some of the best 
+performance, both in terms of speed to train as well as overall quality of the produced model. 
+
+As with AdaBoost, the ``HistGradientBoostingClassifier`` takes several hyperparameters. In the code 
+below we explore the following hyperparameters: 
+
+* max_depth: The maximum depth of each tree. 
+* l2_regularization: A parameter used for regularization, i.e., a parameter that penalizes complex models 
+  to prevent overfitting. In this case, the penalty applies to leaves with a high number of observations. 
+* learning_rate: A value used to scale the step length of the gradient descent algorithm. 
+
+In the code below we explore a hyperparameter space for each of the hyperparameters above. These were 
+constructed experimentally based on several trials. In practice, one can start by training a model with 
+no hyperparameters and only add them in to improve performance, as needed. 
+
+.. code-block:: python3 
+
+   from sklearn.ensemble import HistGradientBoostingClassifier
+
+   # HGBoost with grid search --- 
+   param_grid = {
+      'learning_rate': [0.01, 0.1, 0.2],
+      'max_depth': [3, 5, 7],
+      'l2_regularization': [0, 0.1, 1]
+   }
+
+   hgb = HistGradientBoostingClassifier(random_state=42)
+   grid_search = GridSearchCV(hgb, param_grid, n_jobs=8, cv=3)
+   grid_search.fit(X_train, y_train)
+
+The code above runs in about 10 seconds on the class VM, which is fast, relatively speaking, given the 
+size of the dataset. We also see the model achieves excellent accuracy: 
+
+.. code-block:: python3 
+
+   test_report = classification_report(y_test, grid_search.predict(X_test))
+   train_report = classification_report(y_train, grid_search.predict(X_train))
+   print(f"Performance on TEST\n*******************\n{test_report}")
+   print(f"Performance on TRAIN\n********************\n{train_report}")
+
+   Performance on TEST
+   *******************
+               precision    recall  f1-score   support
+
+            0       0.94      0.99      0.97     41769
+            1       0.60      0.19      0.28      3001
+
+      accuracy                           0.94     44770
+      macro avg       0.77      0.59      0.63     44770
+   weighted avg       0.92      0.94      0.92     44770
+
+   Performance on TRAIN
+   ********************
+               precision    recall  f1-score   support
+
+            0       0.95      0.99      0.97     97460
+            1       0.63      0.20      0.30      7003
+
+      accuracy                           0.94    104463
+      macro avg       0.79      0.60      0.64    104463
+   weighted avg       0.92      0.94      0.92    104463
+
 
 References and Additional Resources
 -----------------------------------
