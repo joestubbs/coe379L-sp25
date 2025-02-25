@@ -141,11 +141,41 @@ weak learners' predictions, with more accurate learners receiving higher weights
 AdaBoost in scikit-learn
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Let's look at implementing Adaboost in sklearn. To illustrate, we'll work with a new dataset on 
+Let's look at implementing Adaboost in sklearn. 
+
+
+The Give Me Some Credit Kaggle Dataset
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+To illustrate, we'll work with a new dataset on 
 credit defaulting. This dataset was originally part of a 3 month long Kaggle competition called 
 "Give Me Some Credit" that ran in 2011 [2]. We have made part of the data available from our 
 course website, `here <https://raw.githubusercontent.com/joestubbs/coe379L-sp25/refs/heads/master/datasets/unit02/credit.csv>`_. 
 
+In this dataset we have the following feature columns: 
+
+* RevolvingUtilizationOfUnsecuredLines: Total balance on credit cards and personal lines of 
+  credit except real estate and no installment debt like car loans divided by the sum of credit limits.
+* Age: Age of borrower, in years. 
+* NumberOfTime30-59DaysPastDueNotWorse: Number of times borrower has been 30-59 days 
+  past due but no worse in the last 2 years.
+* DebtRatio: Monthly debt payments, alimony,living costs divided by monthy gross income.
+* MonthlyIncome: Monthly income. 
+* NumberOfOpenCreditLinesAndLoans: Number of Open loans (installment like car loan or mortgage) and 
+  Lines of credit (e.g. credit cards).
+* NumberOfTimes90DaysLate: Number of times borrower has been 90 days or more past due.
+* NumberRealEstateLoansOrLines: Number of mortgage and real estate loans including home 
+  equity lines of credit.
+* NumberOfTime60-89DaysPastDueNotWorse: Number of times borrower has been 60-89 days past due but no 
+  worse in the last 2 years.
+* NumberOfDependents: Number of dependents in family excluding themselves (spouse, children etc.).
+
+The target variable we are trying to predict is: 
+
+* SeriousDlqin2yrs: Whether the person experienced 90 days past due delinquency or worse. (Y/N)
+
+
+Dataframe Preparation and EDA
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 As usual, we will import the necessary libraries and load the data as a csv file: 
 
@@ -155,6 +185,7 @@ As usual, we will import the necessary libraries and load the data as a csv file
    >>> import numpy as np
 
    >>> data = pd.read_csv('credit.csv')
+
 
 We can see from some initial exploratory data analysis that the dataframe contains an index column: 
 
@@ -170,6 +201,19 @@ Let's remove that column:
 
    # confirm that the column is removed
    >>> data.head()
+
+Let's look for duplicate rows: 
+
+.. code-block:: python3 
+
+   >>> data.duplicated().sum()
+   767
+
+We see there are some duplicate rows, so let's remove them: 
+
+.. code-block:: python3 
+
+   >>> data = data.drop_duplicates()
 
 What about missing values? We can use a method like ``info()`` to get a high-level picture: 
 
@@ -232,6 +276,9 @@ multivariate approach?
    memory usage: 12.6 MB
 
 
+Model Training and Evaluation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 At this point we are ready to train a model. We'll use the standard procedure: 
 
 1. Create ``X`` and ``y`` 
@@ -239,7 +286,7 @@ At this point we are ready to train a model. We'll use the standard procedure:
 3. Fit across a grid of hyperparameters. 
 4. Evaluate the model's performance. 
 
-In this case, we'll 
+Independent and dependent variable declaration:
 
 .. code-block:: python3 
 
@@ -247,13 +294,28 @@ In this case, we'll
    >>> X = data.drop('SeriousDlqin2yrs', axis=1)
    >>> y = data['SeriousDlqin2yrs']
 
+Train-test split: 
+
 .. code-block:: python3 
 
    >>> X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, stratify=y, random_state=1)
 
+**The AdaBoostClassifier**. We'll use the ``AdaBoostClassifier`` class from the ``sklearn.ensemble`` 
+module. Recall that the AdaBoost algorithm attempts to learn a strong learner model from a set of weak 
+learners. The ``AdaBoostClassifier`` class is parameterized by the type of base classifier we want to use. 
+
+Thw ``AdaBoostClassifier`` constructor takes as an argument, called ``estimator``, 
+for the type of base classifier to use. It then trains the strong learner using additional copies of this 
+base estimator class. We'll use ``DecisionTreeClassifier`` as the base class. It is a common technique to use 
+trees with small depth (e.g., a depth of 1) for the weak learners and is sometimes referred to as a "tree stump".
+
+There are hyperparameters associated with the ``AdaBoostClassifier``, including: 
+
+* ``n_estimators``: The number of weak learners to train 
+* ``learning_rate``: The weight applied to each weak learner at each boosting iteration. 
 
 In the code below, we create a parameter grid search space that includes the learning rate and the number 
-of estimators --- in this case, the number of decision trees. with this size of search space, the call to 
+of estimators --- in this case, the number of decision trees. With this size of search space, the call to 
 ``fit()`` will take around 1 minute. (Note the use of ``n_jobs`` in the ``GridSearchCV`` constructor.)
 
 .. code-block:: python3 
@@ -274,7 +336,7 @@ of estimators --- in this case, the number of decision trees. with this size of 
    grid_search.fit(X_train, y_train)
 
 
-Here we use the classification_report to report the model's performance. In this case, we focused on 
+Here we use the ``classification_report`` to report the model's performance. In this case, we focused on 
 accuracy. 
 
 .. code-block:: python3 
