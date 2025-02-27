@@ -36,7 +36,7 @@ Longitude: A measure of how far west a house is; a higher value is farther west
 One dependent variable that is to be predicted is:
 price_above_median: Median house value for households within a block (measured in US Dollars)
 
-It can be downloaded `here <hhttps://github.com/joestubbs/coe-379l-sp25/blob/master/datasets/unit02/california_housing.csv`_.
+It can be downloaded `here <hhttps://github.com/joestubbs/coe-379l-sp25/blob/master/datasets/unit02/california_housing.csv>`_.
 
 **Part 1 : (5 points)** Exploratory Data Analysis
 
@@ -50,9 +50,11 @@ It can be downloaded `here <hhttps://github.com/joestubbs/coe-379l-sp25/blob/mas
 
 * Split the data into training and test datasets. Make sure your split is reproducible and 
   that it maintains roughly the proportion of each class of dependent variable. (1 points) 
-* Perform data standardization if needed (1 points)
 * Perform classification using below supervised learning techniques. When appropriate, use 
-  search the hyperparameter space for an optimal hyperparameter setting. (4 points) 
+  a hyperparameter space search to find optimal hyperparameter setting. 
+  Consider using other techniques from class lectures, such as data standardization. 
+  At a minimum, you should try the following model algorithms. We will base the grading on the 
+  quality of your model(s) you develop. (5 points) 
     * K-nearnest neighbor
     * Decision Tree Classifier
     * Random Forest Classifier

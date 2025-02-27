@@ -60,7 +60,7 @@ update:
 
 .. math::
 
-  x \rightarrowtail (x - mean(X_i)) / std(X_i)
+  x \rightarrowtail \frac{x - mean(X_i)}{std(X_i)}
 
 where:
  * :math:`mean(X_i)` is the mean of the column, :math:`X_i`
