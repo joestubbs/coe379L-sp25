@@ -15,3 +15,4 @@ techniques for supervised learning.
    knn
    decision_tree_and_random_forrest
    ensemble_and_boosting
+   data_standardization_and_pipelines
