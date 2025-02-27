@@ -67,7 +67,7 @@ It can be downloaded `here <https://github.com/joestubbs/coe-379l-sp25/blob/mast
 **Part 3: (5 Points)**  Submit a 2-3 page report summarizing your findings. Be sure to include the following: 
 
 * Which techniques did you use to train the models?  (1 point)
-* Explain how you used data standardization techniques and for which variables? (1 point)
+* Explain any techniques used to optimize model performance? (1 point)
 * Compare the performance of all models to predict the dependent variable? (1 point)
 * Which model would you recommend to be used for this dataset (1 point)
 * For this dataset, which metric is more important, why? (1 point)
