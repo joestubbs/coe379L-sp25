@@ -36,7 +36,7 @@ Longitude: A measure of how far west a house is; a higher value is farther west
 One dependent variable that is to be predicted is:
 price_above_median: Median house value for households within a block (measured in US Dollars)
 
-It can be downloaded `here <https://github.com/joestubbs/coe-379l-sp25/blob/master/datasets/unit02/california_housing.csv>`_.
+It can be downloaded `here <https://raw.githubusercontent.com/joestubbs/coe379L-sp25/refs/heads/master/datasets/unit02/california_housing.csv>`_.
 
 **Part 1 : (5 points)** Exploratory Data Analysis
 
@@ -59,7 +59,8 @@ It can be downloaded `here <https://github.com/joestubbs/coe-379l-sp25/blob/mast
     * Decision Tree Classifier
     * Random Forest Classifier
     * AdaBoost Classifier
-* Print report showing accuracy, recall, precision and f1-score for each classification model. Which 
+* Print report showing accuracy, recall, precision and f1-score for each classification model on all 
+  data (training, testing, etc.). Which 
   metric is most important for this problem? (You will explain your answer in the report in Part 3). ( 2 points)
 * Print confusion matrix for each model. (2 points)
 
