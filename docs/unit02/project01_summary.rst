@@ -29,7 +29,8 @@ Cautions
 ^^^^^^^^
 1. When using AI, make sure you understand what the generated code does. It's clear several people are using 
    ChatGPT, etc., but some of you seemed to 
-   Also, please say **please state exactly how you used it**. We did not count off 
+   Also, **please state exactly how you used it**. Do this by adding comments directly in the code (i.e., Jupyter 
+   notebook) describing what function/code blocks were generated, etc., by AI. We did not count off 
    on Project 1 for this but we will be in future projects.  
 
 2. Many people did not realize that they needed to treat columns with invalid values 
