@@ -376,7 +376,8 @@ Here is an example implementation:
 
     def compute_output_for_layer(X, layer):
         """
-        Compute the output of a layer for some input, `X`, a numpy array of 
+        Compute the output of a layer for some input, `X`, a numpy array of dimension equal to the
+        dimension of the perceptrons in the layer, `layer`. 
         """
         # our result will be a list of outputs for each perceptron
         result = []
@@ -401,12 +402,23 @@ We can now create an input and compute the output of our layer:
     0.9238752623623957,
     0.4755367087316097]
 
-If we wanted to add a second layer to our network, we could do that. To pass the output of this 
+Note that the output is an array of length 5. Why is that? 
+
+It's because there were 5 perceptrons in the layer, ``l1``. So this is an important point: the 
+dimension of the output of a layer is equal to the number of perceptrons in the layer, but this in  
+turn can be different from the input dimension of the layer, which is the dimension of each perceptron.
+
+If we wanted to add a second layer to our network, we could do that. To pass the output of the first 
 layer to the input of the next layer, we require the input dimension of the perceptrons in the next 
-layer that will process the outputs to be the same input dimension as the output dimension. If we 
-want a *fully connected* network, where the output of every perceptron in one layer is passed as an 
+layer to be the same input dimension as the output dimension. As we have just seen, assuming we want 
+a *fully connected* network, where the output of every perceptron in one layer is passed as an 
 input to every perceptron in the next layer, then the input dimension of the next layer must equal 
 the number of of perceptrons in the previous layer. 
+
+.. note:: 
+
+    Fully-connected ANNs are a specific type of model architecture. Later in this unit, we will see other 
+    architectures, such as CNN. 
 
 In the code below, we create a second layer with 2 perceptrons of dimension 5. 
 
@@ -421,6 +433,8 @@ We can pass the output of ``l1`` as the input to ``l2``:
     >>> o2 = compute_output_for_layer(o1, l2)
     >>> o2 
     [0.8332717112765128, 0.8277819032135856]
+
+Again, we see the output dimension of 2 equals the number of perceptrons in the layer. 
 
 Proceeding in this way, we could create networks of arbitrary depth. Of course, we would also need 
 a way to update the weights based on input samples (i.e., training data). Fortunately, we can use a 
@@ -467,7 +481,7 @@ If you run the code above, the output should be:
 From Linear Algebra you may recall that scalars only have magnitude but no direction. Hence, a rank-0 or
 scalar tensor has no shape.
 
-2. *Rank-1 tensor*. You can simply consider it as 1-D array.
+2. *Rank-1 tensor*. You can think of a rank-1 tenant as just a 1-D array.
 
 .. code-block:: python3 
 
@@ -495,9 +509,9 @@ Examples:
 
 .. code-block:: python3 
 
-    tf.math.sigmoid(z)
-    tf.math.tanh(z)
-    tf.nn.relu(z)
+    tf.math.sigmoid
+    tf.math.tanh
+    tf.nn.relu
 
 You would have noticed the last one is taken from the neural networks API (i.e., the ``nn`` module) 
 of TensorFlow.
@@ -511,19 +525,24 @@ Building a First Neural Network with TensorFlow Keras
 
 TensorFlow Keras refers to the high-level neural networks API provided by TensorFlow. 
 Keras is integrated directly into TensorFlow, making it easy to build and train neural 
-networks with TensorFlow as the backend. Keras covers every step of machine learning from data preprocessing to hyperparameter tuning
-to deployment. Every TensorFlow user should use Keras by default, unless they are building their tools on top of TensorFlow.
+networks with TensorFlow as the backend. Keras covers every step of machine learning from data 
+preprocessing to hyperparameter tuning
+to deployment. Every TensorFlow user should use Keras by default, unless they are building their tools on 
+top of TensorFlow.
 
-Core data structure of Keras is ``Models`` and ``Layers``. A layer is simple input/output transformation and model is
-a directed acyclic graph (DAG) of layers. 
+The core data structures of Keras are ``Models`` and ``Layers``. As we have seen, conceptually, a layer 
+is just an input/output transformation; a model is a directed acyclic graph (DAG) of layers. 
 
-Layers encapsulates weights and biases whereas, Model groups the layers together and can be trained on the data.
+Layers encapsulate the weights and biases we discussed above, while a model groups layers together and 
+defines how layers 
+are connected to each other. Additionally, a model can be trained on data.
 
-Simplest model is a ``Sequential model``, which is a linear stack of layers. 
-You can build complex architectures with Keras functional API, or use subclassing to write models from scratch.  
+The simplest model is the ``Sequential`` model, which is a linear stack of layers. 
+
+.. You can build complex architectures with the Keras functional API, or use subclassing to write models from scratch.  
 
 In the example below, you will see how easy it is to build a simple neural network
-with Keras. We will build a *sequential* model to classify the Iris dataset we looked at in Unit 2. 
+with Keras. We will build a ``Sequential`` model to classify the Iris dataset we looked at in Unit 2. 
 
 Loading the Data
 ^^^^^^^^^^^^^^^^
@@ -543,7 +562,10 @@ Before we get started building the model, let's import the dataset and remember 
     iris.target.shape
     #(150, 0)
 
-Let's split the data into train and test sets and one hot encode the target variable.
+Let's split the data into train and test sets and one hot encode the target variable. Note that 
+we are using the ``to_categorical`` function from the ``utils`` module of Keras. In general, it 
+is always a good idea to use pre-processing functions and other utilities from the same library
+that you will be using for model development. 
 
 .. code-block:: python3 
 
