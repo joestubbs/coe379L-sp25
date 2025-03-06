@@ -1,5 +1,22 @@
 Introduction to Deep Learning
 ==============================
+In this large module, we introduce Artificial Neural Networks (ANNs) and Deep Learning. 
+We describe the basic components needed to implement ANNs in Python before introducing the 
+Keras API from Tensorflow. We implement a 3-layer ANN to do classification on the Iris data set 
+and explore its performance. 
+
+By the end of this module, students should be able to:
+
+1. Describe what ANNs are at a high-level and some tasks they can be used on. 
+2. Understand the basic building blocks of an ANN, including the perceptron and various non-linear 
+   activation functions, and how to implement an ANN in Python. 
+3. Understand how to work with and use an initial portion of the Keras API, including the Sequential 
+   model, the Dense layer, and various related methods and parameters. 
+4. Create a basic ANN using Karas and train it on a dataset. 
+
+
+Introduction 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In recent years, Deep Learning has made remarkable strides. **Deep Learning** is a subfield of 
 Machine Learning. Both Deep learning (DL) and Machine learning (ML) are subfields of Artificial
@@ -834,7 +851,81 @@ We evaluate the model's performance on test dataset using the evaluate method.
     print("Test Loss:", test_loss)
     print("Test Accuracy:", test_accuracy)
 
-With these steps we were able to set up a simple feedforward neural network using Keras with three dense layers (input, hidden and output) and specify the model's architecture, compilation parameters, and makes predictions on some input data. 
+    Test Loss: 0.653412401676178
+    Test Accuracy: 0.699999988079071
+
+Notice that the accuracy scores on test are quite low. Let's look more closely at the output from our called
+to ``fit()``. We see that, even on the training data, the accuracy is not very good. Here is the 
+tail end of the output logs: 
+
+.. code-block:: python3 
+
+    Epoch 16/20
+    4/4 - 0s - loss: 0.7497 - accuracy: 0.8148 - val_loss: 0.7383 - val_accuracy: 0.8333 - 21ms/epoch - 5ms/step
+    Epoch 17/20
+    4/4 - 0s - loss: 0.7296 - accuracy: 0.7500 - val_loss: 0.7095 - val_accuracy: 0.8333 - 21ms/epoch - 5ms/step
+    Epoch 18/20
+    4/4 - 0s - loss: 0.7103 - accuracy: 0.7037 - val_loss: 0.6804 - val_accuracy: 0.8333 - 21ms/epoch - 5ms/step
+    Epoch 19/20
+    4/4 - 0s - loss: 0.6894 - accuracy: 0.6944 - val_loss: 0.6591 - val_accuracy: 0.7500 - 21ms/epoch - 5ms/step
+    Epoch 20/20
+    4/4 - 0s - loss: 0.6715 - accuracy: 0.6667 - val_loss: 0.6367 - val_accuracy: 0.7500 - 21ms/epoch - 5ms/step
+
+The snippet above indicates that the training accuracy was around 70\% during the last few epochs. 
+If we review the entire log set, we'll see that the accuracy was generally increasing, having started 
+off around 35\%. Note that the exact numbers will differ slightly due to the randomized nature of the 
+algorithm. 
+
+This perhaps is suggesting that we didn't train *enough*, that is, that we stopped the training process 
+before we had reached an optimal network. Remember that we hard-coded a specific number of epochs -- 20 -- 
+to do during training. 
+
+Let's go back and retrain the model with a larger number of epochs and see if that improves the performance. 
+Below, I specify ``epochs=100`. 
+
+.. code-block:: python3 
+
+    model.fit(X_train, y_train_encoded, validation_split=0.1, epochs=100, verbose=2)
+
+    . . . 
+
+    Epoch 97/100
+    4/4 - 0s - loss: 0.1854 - accuracy: 0.9352 - val_loss: 0.1244 - val_accuracy: 0.9167 - 21ms/epoch - 5ms/step
+    Epoch 98/100
+    4/4 - 0s - loss: 0.1861 - accuracy: 0.9352 - val_loss: 0.1275 - val_accuracy: 0.9167 - 22ms/epoch - 5ms/step
+    Epoch 99/100
+    4/4 - 0s - loss: 0.1845 - accuracy: 0.9352 - val_loss: 0.1225 - val_accuracy: 0.9167 - 22ms/epoch - 5ms/step
+    Epoch 100/100
+    4/4 - 0s - loss: 0.1824 - accuracy: 0.9352 - val_loss: 0.1242 - val_accuracy: 0.9167 - 21ms/epoch - 5ms/step
+
+The accuracy on the training set indeed gets much better. Let's also look at 
+the corresponding results on test: 
+
+.. code-block:: python3 
+
+    test_loss, test_accuracy = model.evaluate(X_test, y_test_encoded, verbose=0)
+    Test Loss: 0.22188232839107513
+    Test Accuracy: 0.8999999761581421
+
+
+Indeed, the results have improved. How do we know if this is the optimal result? 
+In general, determining the optimal number of epochs must be handled on a case-by-case 
+basis. A goog basic approach is the following: 1) set a very high number of epochs, more 
+than should be required to achieve optimal performance; 2) monitor the performance 
+of the model during training on the validation set; 3) quit when valiation performance 
+begins to decrease (overfitting starts to take place).
+
+In a future lecture, we'll look at methods for implementing this strategy using, for example, 
+the ``EarlyStopping`` functionality from Keras. 
+
+Conclusion 
+^^^^^^^^^^
+
+With these steps we were able to set up a simple feedforward neural network using Keras 
+with three dense layers (an input, hidden and output layer), specify the model's architecture, 
+and compilation parameters, and fit the model to some data. We also explored one of the 
+parameters, ``epochs``, and saw how it could make a significant difference on the performance 
+of the resulting model, even for a very simple dataset such as the Iris dataset. 
 
 
 **Take-Home Exercise:** Can you walk through this code and tell what's happening?
