@@ -417,8 +417,8 @@ the number of of perceptrons in the previous layer.
 
 .. note:: 
 
-    Fully-connected ANNs are a specific type of model architecture. Later in this unit, we will see other 
-    architectures, such as CNN. 
+    *Fully-connected* ANNs, also called *dense*, are a specific type of model architecture. 
+    Later in this unit, we will see other architectures, such as CNN. 
 
 In the code below, we create a second layer with 2 perceptrons of dimension 5. 
 
@@ -646,44 +646,35 @@ We add layers to the model using the add method. In this case:
 
 Step 3: Compile the Model and Check Model Summary 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Next step is to compile the model using the ``compile`` method. With compile, you can configure the model for tarining.
-For example, model.compile can take following arguments
+Next step is to compile the model using the ``compile`` method. With compile, you can configure the model for 
+training. The ``model.compile`` function accepts a number of arguments. We being by 
+introducing the following important arguments. For a complete list, see the Keras documentation for 
+compile `here <https://www.tensorflow.org/api_docs/python/tf/keras/Model#compile>`_.
 
-``Note`` : This is an example, do not run this code to compile your model.
-
-.. code-block:: python3 
-
-    Model.compile(
-        optimizer="rmsprop",
-        loss=None,
-        loss_weights=None,
-        metrics=None,
-        weighted_metrics=None,
-        run_eagerly=False,
-        steps_per_execution=1,
-        jit_compile="auto",
-        auto_scale_loss=True,
-    )
-``optimizer`` :This parameter specifies the optimizer to use during training. Optimizers are algorithms or methods used to change the attributes of your neural network such as weights and learning rate to reduce the losses.
-Examples: "rmsprop", "adam", "sgd" (Stochastic Gradient Descent), etc.
-Learning rate is a crucial hyperparameter, it determines the size of step the optimizer must take while updating weights. We can set what learning rate in the model.compile, optimizer part. 
+``optimizer``: This parameter specifies the optimizer to use during training. Optimizers are algorithms or 
+methods are used to update the parameters of the neural network during training to minimize the loss function.
+Examples: ``adam``, ``rmsprop``, ``sgd``. At a high level, these different options trade convergence speed 
+for computational resources required. Commonly, ``adam`` is often considered the best choice. 
 
 ``loss``: This parameter specifies the loss function to use during training. The loss function measures how well the model performs on the training data and guides the optimizer in adjusting the model's parameters.
-Examples: "sparse_categorical_crossentropy", "mean_squared_error", "binary_crossentropy", "categorical_crossentropy", etc.
-Choice of loss function depends on nature of problem.
-1. Binary Classification: Binary Crossentropy
-2. Multi-Class Classification: Categorical Crossentropy, Sparse Categorical Crossentropy
-3. Regression: Mean Squared Error (MSE), Mean Absolute Error (MAE)
+Examples: ``sparse_categorical_crossentropy``, ``mean_squared_error``, ``binary_crossentropy``, 
+``categorical_crossentropy``, etc.
+The choice of loss function depends on the type of task the network is being trained for, e.g., 
+
+1. Binary Classification: typically one uses ``binary_crossentropy``. 
+2. Multi-Class Classification: either ``categorical_crossentropy``, or ``sparse_categorical_crossentropy``
+3. Regression: typically, either ``mean_squared_error``, or ``mean_absolute_error``.
 
 ``metrics``: This parameter is a list of metrics to evaluate the model's performance during training and testing.
-Examples: ["accuracy"], ["accuracy", "precision", "recall"], etc.
+Examples: ``accuracy``, ``precision``, ``recall``, etc., passed as a list. 
 
 You need to provide appropriate values for these parameters based on your specific task and model architecture.
 
-In the Iris example when we compile the model, we specify optimizer (Adam), the loss function (categorical_crossentropy, suitable 
-for multi-label classification problems), and metrics to evaluate during training (accuracy).
+In the Iris example when we compile the model, we specify optimizer (``adam``), the loss function 
+(``categorical_crossentropy``, suitable 
+for multi-label classification problems), and metrics to evaluate during training (``accuracy``).
 
-Time permiting we will look at different types of optimizers.
+Time permitting we will look at different types of optimizers.
 
 .. code-block:: python3 
 
@@ -717,7 +708,7 @@ The output should look similar to the following:
     
 Let's break down the summary:
 
-**Model.** The type of model of listed, in this case it is a Sequential model
+**Model.** The type of model of listed, in this case it is a Sequential model.
 
 **Layer (type).** 
 Each layer in the model is listed along with its type. For example, "dense"
@@ -725,25 +716,36 @@ indicates a fully connected layer. Recall that we had 3 total layers: one input 
 4 perceptrons, one "hidden" layer with 128 perceptrons, and one
 output layer with 3 perceptrons. 
 
-**Output Shape.** The output shape of each layer. The ``(None, 4)`` means that the output of this 
-particular layer is a 2D tensor with a variable batch size and 4 elements in the second dimension.
-Note that the output dimension is the same as the number of perceptrons for the layer, which is what we would
-expect for a fully connected network (i.e., dense layers). 
+**Output Shape.** The output shape of each layer. For each of our layers, a tuple with two values 
+is provided; for example, the ``(None, 4)`` in the first layer. 
+The ``4`` here is indicating that the output has 4 values, which is what we would expect (why?)
+The ``None`` refers to the fact that the layer accepts a variable *batch size* --- we will look at the 
+batch size concept momentarily.
 
-**Param #.** The number of parameters (weights and biases) in each layer.
-In the first dense layer there are 4 perceptrons, 
+Note that the output dimension is the same as the number of perceptrons for the layer, since each 
+perceptron produces a single output value. 
+
+**Param #.** The total number of parameters (weights and biases) in each layer.
+For example, in the first dense layer there are 4 perceptrons, 
 the input dimension was 4 and there is a 1 bias term with each perceptron. Therefore, the first layer has a total of 
-:math:`4*4 + 4 = 20` parameters. 
+:math:`4*(4+1) = 20` parameters. 
 
 Similarly, the second layer has 128 perceptrons each with an input dimension equal to the output dimension of 
-the first layer, which is 4. Thus, each of the 128 perceptrons has :math:`128+1=129` parameters, and therefore the 
-entire layer has :math:`128*4 + 128 = 640` parameters. 
+the first layer, which is 4. Thus, each of the 128 perceptrons has :math:`4+1=5` total parameters (4 weights and 
+1 bias parameter), and therefore the entire layer has :math:`128*5 = 640` parameters. 
 
-..
-    8 weights (count the number of connections from 2 inputs neurons to 4 neurons in the layer 1) and 4 bias (one for each neuron). Summing them together to get 12 parameters.
-    In the output layer there are 4 connection from previous layer to output neuron + 1 bias term, making it to total 5
 
 *Exercise.* Convince yourself that there are 387 parameters in the last layer. 
+
+
+*Solution.* In general, for a dense or fully connected layer, since every perceptron in the previous layer 
+provides its output as an input to each perceptron, and since a perceptron produces a single output value, 
+the input dimension equals the number of perceptrons in the previous layer. Thus, for layer 3, since 
+there were 128 perceptrons in layer 2, the input dimension is 128 and that is the number of weights on each 
+perceptron. Since each perceptron also has a single bias parameter, there are a total of 129 parameters for 
+each perceptron in layer 3. Finally, since there are 3 perceptrons in layer 3, the total number of parameters 
+is :math:`3*129 = 387`.
+
 
 Step 4: Train the model. 
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -754,14 +756,12 @@ arguments. We'll look at just a few of the more important ones here:
 
 * ``x`` and ``y`` -- The input and target data, respectively. A number of valid types can be passed here, 
   including numpy arrays, TensorFlow tensors, Pandas DataFrames, and others. 
-* ``epochs`` -- The number of complete passes over the entire training dataset that will be performed 
+* ``epochs`` -- The total number of complete passes over the entire training dataset that will be performed 
   during training.
-* ``batch_size`` -- The number of samples per gradient update.
-
-.. note::
-
-    The choice of batch_size can affect the memory usage while fitting the model. 
-    Bigger batch sizes can sometimes cause out of memory issues.
+* ``batch_size`` -- This is the number of samples per gradient to use before updating the model's 
+  parameters (weights and biases). Smaller batch sizes require less computational resources, especially 
+  memory, and can help with finding global maximum values but can also greatly increase the time required 
+  for the model to converge. 
 
 * ``validation_split`` -- The percentage, a a float, of the dataset to hold out for validation. Keras will
   compute the validation score at the end of each epoch. 
@@ -813,6 +813,13 @@ arguments. We'll look at just a few of the more important ones here:
     Epoch 20/20
     4/4 - 0s - loss: 0.7152 - accuracy: 0.6852 - val_loss: 0.7106 - val_accuracy: 0.7500 - 61ms/epoch - 15ms/step
 
+.. warning::
+
+    As mentioned above, the choice of ``batch_size`` can affect the memory usage while fitting the model. 
+    Bigger batch sizes can sometimes cause out of memory (OOM) errors. If run into OOM errors, consider 
+    reducing the value of ``batch_size``. 
+
+
 You can read more about the parameters available to the ``fit()`` function in the documentation [6].
 
 Step 5: Evaluate the model on test data
@@ -830,7 +837,7 @@ We evaluate the model's performance on test dataset using the evaluate method.
 With these steps we were able to set up a simple feedforward neural network using Keras with three dense layers (input, hidden and output) and specify the model's architecture, compilation parameters, and makes predictions on some input data. 
 
 
-**Exercise:** Can you walk through this code and tell what's happening?
+**Take-Home Exercise:** Can you walk through this code and tell what's happening?
 
 .. code-block:: python3
 
