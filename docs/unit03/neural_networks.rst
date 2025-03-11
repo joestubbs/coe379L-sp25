@@ -629,7 +629,7 @@ We use the ``Sequential()`` constructor to create a new model object:
 Step 2: Add Layers to the Model
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-We add layers to the model using the add method. In this case:
+We add layers to the model using the ``add`` method. In this case:
 
 * The first layer added is a dense (fully connected) layer with 4 perceptrons and an input_dim=4. 
   We could have chosen any number of perceptrons here, but we must specify an input dimension since it is the 
@@ -663,7 +663,7 @@ We add layers to the model using the add method. In this case:
 
 Step 3: Compile the Model and Check Model Summary 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Next step is to compile the model using the ``compile`` method. With compile, you can configure the model for 
+The next step is to compile the model using the ``compile`` method. With compile, you can configure the model for 
 training. The ``model.compile`` function accepts a number of arguments. We being by 
 introducing the following important arguments. For a complete list, see the Keras documentation for 
 compile `here <https://www.tensorflow.org/api_docs/python/tf/keras/Model#compile>`_.
@@ -671,7 +671,8 @@ compile `here <https://www.tensorflow.org/api_docs/python/tf/keras/Model#compile
 ``optimizer``: This parameter specifies the optimizer to use during training. Optimizers are algorithms or 
 methods are used to update the parameters of the neural network during training to minimize the loss function.
 Examples: ``adam``, ``rmsprop``, ``sgd``. At a high level, these different options trade convergence speed 
-for computational resources required. Commonly, ``adam`` is often considered the best choice. 
+for computational resources required. Commonly, ``adam`` is often considered the best choice, at least to 
+start with. 
 
 ``loss``: This parameter specifies the loss function to use during training. The loss function measures how well the model performs on the training data and guides the optimizer in adjusting the model's parameters.
 Examples: ``sparse_categorical_crossentropy``, ``mean_squared_error``, ``binary_crossentropy``, 
