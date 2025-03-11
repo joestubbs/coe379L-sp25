@@ -188,7 +188,7 @@ ensuring that the sum of the probabilities of all classes is equal to 1.
 Model Training
 ^^^^^^^^^^^^^^
 
-Let's compile and fit the model:
+Let's compile and fit the model.
 
 .. code-block:: python3
 
@@ -200,7 +200,7 @@ Here we use the following parameters to the ``compile`` method:
 * ``optimizer=adam``: As mentioned previously, this is a good default choice.   
 * ``loss=categorical_crossentropy``: As mentioned previously, this is an appropriate choice for categorical 
   problems. 
-* ``metrics=[accuracy]``: we specify accuracy as the metric to track. 
+* ``metrics=["accuracy"]``: Here, we specify accuracy as the metric to track. 
 
 And these to the ``fit`` method: 
 
@@ -256,13 +256,12 @@ We can next print the model summary. It shows how many trainable parameters are 
     :alt: 
 
 Here the total parameters and number of trainable parameters is same which is 717,210.
-It is calculated as follows:
+It is calculated as follows: Total weights from previous layer + Total bias for each neuron in 
+current layer, or, :math:`784*784 + 784 = 615,440`.
 
-Total weights from previous layer + Total bias for each neuron in current layer
- 784*784 + 784 = 615,440
 
 **Optional:**
-In order to see the bias and weights at each epoch we can use the helper function below
+In order to see the bias and weights at each epoch we can use the helper function below:
 
 .. code-block:: python3
 
@@ -291,25 +290,35 @@ This will print all the weights and biases in each epoch.
 Once we fit the model, next important step is predicting on the test data.
 
 
-Step 5: Evaluate model's performance on test data
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Step 5: Evaluate the Model's Performance on Test
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We can use the ``model.predict()`` method directly on the entire test dataset. Remember that 
+we want to use the normalized data: 
+
+.. code-block:: python3
+    
+    >>> y_pred = model.predict(X_test_normalized)
+
+We can see the predictions by printing the ``y_pred`` values. For example: 
 
 .. code-block:: python3
 
-    # predicting the model on test data
-    y_pred=model.predict(X_test_normalized)
-
-We can see the predictions by printing the y_pred values.
-
-.. code-block:: python3
-
-    y_pred[0]
+    >>> y_pred[0]
 
     array([7.8945732e-11, 1.6350994e-10, 4.3761141e-09, 2.2113424e-08,
            3.7417313e-17, 1.5567046e-12, 5.6684709e-17, 9.9999994e-01,
            1.9483424e-11, 1.0344545e-08], dtype=float32)
 
-As you can see, the output values are probabilities, so we will try to get the output class 
+As you can see, the output values are probabilities. How many probability values do we 
+expect there to be? And how should we use these to predict the class label? 
+
+
+Remember the notion of *decision functions* that we have discussed throughout Unit 2 and 3. 
+Decision functions provide values that determine whether an instance is in a particular class. 
+Thus, there is one decision function, and hance, one value, for each class label. 
+In this case, since we used ``softmax`` as the output activation function, the value corresponds 
+to the probability that the instance is in that particular class. Therefore, we will get the output class 
 from these probablities by getting the maximum value:
 
 .. code-block:: python3
