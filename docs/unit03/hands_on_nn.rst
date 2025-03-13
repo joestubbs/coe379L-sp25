@@ -215,6 +215,7 @@ achieve a high accuracy as compared to the OCR system used to load non-digitized
 the music catalog. Typically, organizations have a finite set of resources and must be careful 
 in how they choose to spend them. 
 
+
 Model Training
 ^^^^^^^^^^^^^^
 
@@ -319,6 +320,16 @@ This will print all the weights and biases in each epoch.
 
 Once we fit the model, next important step is predicting on the test data.
 
+
+.. warning:: 
+
+    Be careful with using computational resources on the VM. It is easy to build 
+    large networks that exhaust all of the resources and/or to write training 
+    loops that take a long time (hour or even days) to complete. 
+
+    Plan your development and training work for the projects carefully! 
+
+    
 
 Step 5: Evaluate the Model's Performance on Test
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
