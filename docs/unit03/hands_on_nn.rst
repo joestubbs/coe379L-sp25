@@ -183,7 +183,37 @@ The softmax activation function is commonly used in the output layer of a neural
 especially in multiclass classification problems. 
 It normalizes the output of a neural network into a probability distribution over multiple classes, 
 ensuring that the sum of the probabilities of all classes is equal to 1.
-    
+
+Neural Network Architectures
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+We have a lot of options when designing an ANN. How many layers should we use? How many 
+perceptrons should each layer have? In general, these are complicated questions and 
+there are no simple "recipes" for determining the optimal values. 
+
+However, there are some general guidelines when can use to approach these questions. These 
+include answering the following questions:
+
+1. How complicated and/or sophisticated is the underlying pattern that the model is trying to learn?
+2. How many computational resources are available to the project? 
+3. How much data is available for training? 
+4. How important is the accuracy of the final model? 
+
+This is where engineering design and tradeoffs come into play. More complicated patterns 
+typically require larger neural networks to achieve higher accuracy. For example, our 
+task above of classifying an image as 1 of 10 digits is a much simpler task than trying to 
+classify all characters in the Roman alphabet, and that, in turn, is a much simpler task than 
+classifying all characters in Kanji. 
+Similarly, trying to classify an image as a cat or a dog is much simpler than trying to classigy
+any species on the planet. 
+
+Along the same lines, training a larger neural network requires additional computational
+resources and more high-quality data than a smaller one. 
+
+Finally, for some problems, accuracy is less critical than others. Imagine a recommendation 
+system that predicts music that a listener will enjoy. It may be less critical that this system 
+achieve a high accuracy as compared to the OCR system used to load non-digitized data into 
+the music catalog. Typically, organizations have a finite set of resources and must be careful 
+in how they choose to spend them. 
 
 Model Training
 ^^^^^^^^^^^^^^
@@ -332,7 +362,6 @@ from these probablities by getting the maximum value:
 
 Visualizing Accuracy with the Confusion Matrix
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
 With a confusion matrix we can see how many correct vs incorrect predictions were made using
 the model above.
 
@@ -478,6 +507,8 @@ From Step 1, you may check the shape of ``X_train``, ``y_train``. Run through St
 Questions: 
 
 * How confident are you about the model? 
-* Does the validation accuracy improve if you run for more number of epochs or does 
-  adding more hidden layers help?
+* Does the validation accuracy improve if you run for more number of epochs?
+* Experiment with different network architectures. How does the performance of the model change 
+  if you use a different number of perceptrons in the hidden layer? 
+  Does adding more hidden layers help?
 
