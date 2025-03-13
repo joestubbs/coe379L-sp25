@@ -448,8 +448,7 @@ with correct label on the test data.
     This concludes all the steps for building a 95% accurate neural network for identifying hand-written digits
     between 0-9.
 
-``Class Exercise:``
-
+**In-Class/Take Home Exercise.**
 Let's now repeat the hands-on part for MNIST Fashion dataset. MNIST Fashion dataset has 10 categories 
 for apparel and accessories. Our goal is to accurately classify the images in test dataset by creating the ANN model
 
@@ -466,7 +465,7 @@ for apparel and accessories. Our goal is to accurately classify the images in te
         #8 Bag
         #9 Ankle boot
 
-In Step1: Loading the data, source of dataset will change to:
+Note that in Step 1, loading the data, the source of dataset will change to:
 
 .. code-block:: python3
 
@@ -474,9 +473,11 @@ In Step1: Loading the data, source of dataset will change to:
     from tensorflow.keras.datasets import fashion_mnist
     (X_train, y_train), (X_test, y_test) = fashion_mnist.load_data()
 
-From Step 1, you may check the shape of X_train, y_train. Run through Steps 2 to 5. 
+From Step 1, you may check the shape of ``X_train``, ``y_train``. Run through Steps 2 to 5. 
 
 Questions: 
-- How confident are you about the model? 
-- Does the validation accuracy improve if you run for more number of epochs or does adding more hidden layers help?
+
+* How confident are you about the model? 
+* Does the validation accuracy improve if you run for more number of epochs or does 
+  adding more hidden layers help?
 
