@@ -300,8 +300,11 @@ is :math:`(Filter\_Size * Filter\_Size * Size\_of\_input\_channel +1 ) * number\
 Solving the Fashion MNIST classification example with CNNs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In Step 2, image processing we dont flatten the image, so we dont reshape the X_train and X_test,
-we would just normalize them. Step 3 remains same. Step is where we implement the CNN model.  
+Let's solve the classification problem on the MNIST fashion dataset using CNNs. 
+Note that, in the image processing step (Step 2),  we don't flatten the image, since CNNs are 
+able to use 2D shapes. Thus, the call to ``reshape`` on the ``X_train`` and ``X_test`` objects should 
+be removed, but we will still normalize them. 
+Step 3 remains same, but we will update Step 4 to implement a CNN model instead of an ANN.  
 
 Step1: Load the data
 
@@ -381,20 +384,23 @@ Different CNN architectures have emerged in the past, some of the popular ones a
 - AlexNet
 
 
-They all have some specific use cases where they can be used. More on the architectural details
+Each has specific use cases where they can be used. More on the architectural details
 is given in [2]. In this lecture, we will cover some basics of VGG16 and LeNet-5.
 
 VGG16
 ~~~~~~~~~
 
-The VGGNet architecture was proposed by Karen Simonyan and Andrew Zisserman, from the Visual Geometry Group (VGG) at the University of Oxford, in 2014 [3]. 
-It even finished first runner-up in the ImageNet annual competition (ILSVRC) in 2014.
+The VGGNet architecture was proposed by Karen Simonyan and Andrew Zisserman, from the Visual 
+Geometry Group (VGG) at the University of Oxford, in 2014 [3]. 
+It finished first runner-up in the ImageNet annual competition (ILSVRC) in 2014.
 
 VGGNet has two variants: VGG16 and VGG19. 
-Here, 16 and 19 refer to the total number of convolution and fully connected layers present in each variant of the architecture.
+Here, 16 and 19 refer to the total number of convolution and fully connected layers present in each 
+variant of the architecture.
 
 VGGNet stood out for its simplicity and the standard, repeatable nature of its blocks. 
-Its main innovation over standard CNNs was simply its increased depth (number of layers) - otherwise it utilized the same building blocks - convolution and pooling layers, for feature extraction
+Its main innovation over standard CNNs was simply its increased depth (number of layers). Otherwise, it 
+utilized the same building blocks --- convolution and pooling layers --- for feature extraction. 
 
 Paper:VGG16 [https://arxiv.org/pdf/1409.1556v6.pdf]
 
