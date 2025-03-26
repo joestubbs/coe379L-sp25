@@ -24,7 +24,7 @@ You are given a dataset which contains satellite images from Texas after Hurrica
 There are damaged and non-damaged building images organized into respective folders. 
 You can find the project 3 dataset 
 on the course GitHub repository 
-`here <https://github.com/joestubbs/coe379L-sp24/tree/master/datasets/unit03/Project3>`_. 
+`here <https://github.com/joestubbs/coe379L-sp25/tree/master/datasets/unit03/Project3>`_. 
 
 Your goal is to build multiple neural 
 networks based on different architectures to classify images as containing buildings that 
