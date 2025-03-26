@@ -80,16 +80,16 @@ Develop a simple inference server to serve your trained model over HTTP. There s
 at least two endpoints:
 
 a) A model summary endpoint providing metadata about the model. **Note:** This endpoint must be
-   served at the path ``/summary``. 
+   accept requests to: ``GET /summary``. 
 b) An inference endpoint that can perform classification on an image. 
-   **Note:** This endpoint must be served at the path ``/inference``. 
+   **Note:** This endpoint must accept requests to ``POST /inference``. 
    It must accept a binary message payload containing the image to 
    classify, and it must return a JSON response containing the results of the inference. 
    
    
-**Note:** We will provide you with test code that will call your server (the ``/summary`` and the 
-   ``/inference`` endpoints) and evaluate the responses. Failure to conform to the correct 
-   specification for the inference server will lead to significant penalty on the project grade.
+**Note:** We will provide you with test code that will call your server (the ``GET /summary`` and the 
+``POST /inference`` endpoints) and evaluate the responses. Failure to conform to the correct 
+specification for the inference server will lead to significant penalty on the project grade.
 
 Package your model inference server in a Docker container image and push the image to the 
 Docker Hub. Provide instructions for starting and stopping your inference server using 
