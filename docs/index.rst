@@ -28,6 +28,7 @@ state-of-the-art techniques.
 
    projects/project01.rst
    projects/project02.rst
+   projects/project03.rst
 
 
 Additional Resources
