@@ -451,13 +451,14 @@ Max-pooling is used to reduce the spatial dimensions of the feature maps while r
 4. **Fully Connected Layer**: After the last convolutional block, VGG16 has 3 fully connected dense layers, followed by softmax for classification.
 The first two fully connected layers have 4096 neurons each, followed by a third fully connected layer with 1000 neurons, which is the number of classes in the ImageNet dataset for which VGG16 was originally designed.
 
-VGG16 is available in the keras.applications package and can be imported using following code.
+VGG16 is available from the ``keras.applications`` package and can be imported using following code.
 
 .. code-block:: python3
 
     from keras.applications.vgg16 import VGG16
 
-VGG16 model can be created this one line code
+A VGG16 model can be created with a single line code and loaded with "pre-trained" weights. 
+In this case, the weights were learned from the ImageNet dataset. 
 
 .. code-block:: python3
 
@@ -468,6 +469,61 @@ To check the number of trainable parameters look at the summary of model
 .. code-block:: python3
 
     model_vgg16.summary()
+
+    Model: "vgg16"
+    _________________________________________________________________
+    Layer (type)                Output Shape              Param #   
+    =================================================================
+    input_1 (InputLayer)        [(None, 224, 224, 3)]     0         
+                                                                    
+    block1_conv1 (Conv2D)       (None, 224, 224, 64)      1792      
+                                                                    
+    block1_conv2 (Conv2D)       (None, 224, 224, 64)      36928     
+                                                                    
+    block1_pool (MaxPooling2D)  (None, 112, 112, 64)      0         
+                                                                    
+    block2_conv1 (Conv2D)       (None, 112, 112, 128)     73856     
+                                                                    
+    block2_conv2 (Conv2D)       (None, 112, 112, 128)     147584    
+                                                                    
+    block2_pool (MaxPooling2D)  (None, 56, 56, 128)       0         
+                                                                    
+    block3_conv1 (Conv2D)       (None, 56, 56, 256)       295168    
+                                                                    
+    block3_conv2 (Conv2D)       (None, 56, 56, 256)       590080    
+                                                                    
+    block3_conv3 (Conv2D)       (None, 56, 56, 256)       590080    
+                                                                    
+    block3_pool (MaxPooling2D)  (None, 28, 28, 256)       0         
+                                                                    
+    block4_conv1 (Conv2D)       (None, 28, 28, 512)       1180160   
+                                                                    
+    block4_conv2 (Conv2D)       (None, 28, 28, 512)       2359808   
+                                                                    
+    block4_conv3 (Conv2D)       (None, 28, 28, 512)       2359808   
+                                                                    
+    block4_pool (MaxPooling2D)  (None, 14, 14, 512)       0         
+                                                                    
+    block5_conv1 (Conv2D)       (None, 14, 14, 512)       2359808   
+                                                                    
+    block5_conv2 (Conv2D)       (None, 14, 14, 512)       2359808   
+                                                                    
+    block5_conv3 (Conv2D)       (None, 14, 14, 512)       2359808   
+                                                                    
+    block5_pool (MaxPooling2D)  (None, 7, 7, 512)         0         
+                                                                    
+    flatten (Flatten)           (None, 25088)             0         
+                                                                    
+    fc1 (Dense)                 (None, 4096)              102764544 
+                                                                    
+    fc2 (Dense)                 (None, 4096)              16781312  
+                                                                    
+    predictions (Dense)         (None, 1000)              4097000   
+                                                                    
+    =================================================================
+    Total params: 138357544 (527.79 MB)
+    Trainable params: 138357544 (527.79 MB)
+    Non-trainable params: 0 (0.00 Byte)
 
 
 LeNet-5
