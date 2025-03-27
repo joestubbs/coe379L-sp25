@@ -451,14 +451,14 @@ Max-pooling is used to reduce the spatial dimensions of the feature maps while r
 4. **Fully Connected Layer**: After the last convolutional block, VGG16 has 3 fully connected dense layers, followed by softmax for classification.
 The first two fully connected layers have 4096 neurons each, followed by a third fully connected layer with 1000 neurons, which is the number of classes in the ImageNet dataset for which VGG16 was originally designed.
 
-VGG16 is available from the ``keras.applications`` package and can be imported using following code.
+VGG16 is available from the ``keras.applications`` package and can be imported using the following code:
 
 .. code-block:: python3
 
     from keras.applications.vgg16 import VGG16
 
 A VGG16 model can be created with a single line code and loaded with "pre-trained" weights. 
-In this case, the weights were learned from the ImageNet dataset. 
+In this case, we pull the weights learned from training on the ImageNet dataset. 
 
 .. code-block:: python3
 
@@ -565,7 +565,7 @@ as follows:
 
 
 Summary
-~~~~~~~~~~~~
+~~~~~~~
 
 VGG16 Vs LeNet-5, which architecture to choose from?
 
