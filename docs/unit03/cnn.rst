@@ -473,7 +473,8 @@ To check the number of trainable parameters look at the summary of model
 LeNet-5
 ~~~~~~~~~
 LeNet-5 is one of the earliest pre-trained models proposed by Yann LeCun and others. It was originally trained 
-to run hand written digit classification from 0-9, of the MNIST dataset. LeNet-5 was designed to be 
+for the hand written digit classification task on the MNIST dataset which we saw earlier. 
+LeNet-5 was designed to be 
 computationally efficient, making it suitable for training on relatively small datasets and deploying 
 on resource-constrained devices. The architecture is relatively simple compared to more modern deep 
 learning architectures, which makes it easy to understand, implement, and debug.
