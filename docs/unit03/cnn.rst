@@ -179,39 +179,51 @@ thereby making the image bigger and preserving the pixels from image corners.
 Pooling Layer
 ^^^^^^^^^^^^^
 
-In CNNs, the pooling layer is applied after the convolutional layers. The purpose of doing this is
-to reduce the size of the feature map. Conceptually, the pooling operation "summarizes" the features 
-present in the filtering region.
+In CNNs, the pooling layer is applied after the convolutional layers. The purpose of the pooling layer is
+to reduce the size (i.e., dimension) of the feature map. Conceptually, the pooling operation "summarizes" 
+the features present in the filtering region. 
 
-Let's say our feature map is of size :math:`4x4` and our pooling filter is of size :math:`2x2`, then the
-pooling operation will "summarize: the feature map to :math:`2x2`,
-thereby reducing the number of trainable parameters.
+The pooling layer uses a sliding window with a fixed stride, just like in a convolutional layer.
+However, unlike in a convolutional layer, the computation in a pooling layer
+is fixed. In other words, the pooling layer contains no learnable parameters (i.e. weights). Instead, 
+a pooling layer typically uses either the *max* or *average* function to compute its 
+output from its filter window. You can think of pooling as a kind of "downsampling" of the feature maps, 
+and the size of the pooling filter selected is usually much smaller than size of feature map.
 
-Having fewer training parameters means our network will be faster to train, and it will be faster and require 
-less resources during inference as well. 
-The size of the pooling filter selected is usually much smaller than size of feature map.
-
-Two popular methods of pooling are:
+As we mentioned, the two most popular methods of pooling are:
 
 1. Max Pooling
 
 2. Average Pooling
+
+These are simply the functions used to compute the output for each filter window. 
+An example will make things more clear.
 
 .. figure:: ./images/pooling.png
     :width: 500px
     :align: center
     :alt: 
 
-With **Max Pooling** the summary of features is represented by max values in that region.
-It is typically used when the image has dark background to bring up the brighter pixels.
+Consider the 4x4 feature map pictured on the left above and suppose we want to do pooling 
+with a 2x2 filter and a stride of 2. Sliding the 2x2 window over the 4x4 input results in 
+4 2x3 windows colored blue, yellow, green and red, as pictured. Then:
 
-With **Average Pooling** the summary of features is represented by average values in that region.
+* With **Max Pooling**, we "summarize" each window by taking the max value in that region.
+  This is pictured in the top right. 
+
+* With **Average Pooling** we "summarize" each window by taking the average of the values in 
+  that region. This is pictured in the bottom right. 
+
+.. note:: 
+
+    Max Pooling is typically used when the image has dark background to bring up 
+    the brighter pixels.
 
 With the understanding of Convolutional and Pooling Layers we are now ready to put 
 it all the building blocks together and construct a CNN model.
 
 Basic CNN Architecture
-~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
 
 CNNs are primarily made from the building blocks: Convolutional layer, pooling layer, 
 flatten and fully connected (or "dense") layers.
@@ -330,6 +342,7 @@ Step 3: Convert y to categorical using one hot encoding
     # Convert to "one-hot" vectors using the to_categorical function
     num_classes = 10
     y_train_cat = to_categorical(y_train, num_classes)
+    y_test_cat = to_categorical(y_test, num_classes)
 
 Step 4: Build the CNN model
 
@@ -371,11 +384,19 @@ Step 5: Let's compile and fit it.
     model_cnn.summary()
     model_cnn.fit(X_train_normalized, y_train_cat, validation_split=0.2, epochs=5, batch_size=128, verbose=2)
 
-You must have noticed the difference between number of trainable parameters in CNN vs ANN.  Also the validation accuracy?
-What can say about it?
+Step 6: Evaluate on the test set.
+
+.. code-block:: python3 
+
+    # evaluate on test 
+    test_loss, test_accuracy = model.evaluate(X_test_normalized, y_test_cat, verbose=0)
+
+What did you notice about the difference between number of trainable parameters in a CNN vs the ANNs we 
+looked at in the previous lecture? What about the accuracy?
+
 
 CNN Architectures
-~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
 Different CNN architectures have emerged in the past, some of the popular ones are:
 
 - LeNet-5
@@ -388,7 +409,7 @@ Each has specific use cases where they can be used. More on the architectural de
 is given in [2]. In this lecture, we will cover some basics of VGG16 and LeNet-5.
 
 VGG16
-~~~~~~~~~
+~~~~~
 
 The VGGNet architecture was proposed by Karen Simonyan and Andrew Zisserman, from the Visual 
 Geometry Group (VGG) at the University of Oxford, in 2014 [3]. 
@@ -402,7 +423,7 @@ VGGNet stood out for its simplicity and the standard, repeatable nature of its b
 Its main innovation over standard CNNs was simply its increased depth (number of layers). Otherwise, it 
 utilized the same building blocks --- convolution and pooling layers --- for feature extraction. 
 
-Paper:VGG16 [https://arxiv.org/pdf/1409.1556v6.pdf]
+If you are interested, consider reading the `paper <https://arxiv.org/pdf/1409.1556v6.pdf>`_.
 
 
 .. figure:: ./images/VGG16.png
@@ -411,15 +432,21 @@ Paper:VGG16 [https://arxiv.org/pdf/1409.1556v6.pdf]
     :alt: 
 
 
-VGG16 architecture explained:
-1. **Input Layer**: Input to VGG16 is a color image of 224x224 pixels.
+VGG16 Architecture Explained
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2. **Convolutional Layer**: It contains 13 convolutional layers, each followed by ReLU activation function,
-and a MaxPooling Layer. These convolution layer uses small 3x3 kernels, with stride =1 pixel.
-The number of filters in each convolutional layer increases as we go deeper into the network, from 64 filters in the first few layers to 512 filters in the later layers.
+1. **Input Layer**: The input to VGG16 is a color image of 
+224x224 pixels. 
 
-3. **MaxPooling Layer**: Each convolutional block can have more than 1 convolutional layer. After each convolutional
-block we have MaxPooling layer with a 2x2 window and a stride of 2. Max-pooling is used to reduce the spatial dimensions of the feature maps while retaining the most important features.
+2. **Convolutional Layers**: It contains 13 convolutional layers, each with an ReLU activation function,
+and it contains 5 MaxPooling layers, interspersed within the convolutional layers, as depicted above. 
+The convolution layers use small 3x3 kernels, with stride of 1 pixel.
+The number of filters in each convolutional layer increases as we go deeper into the network, 
+from 64 filters in the first few layers to 512 filters in the later layers.
+
+3. **MaxPooling Layers**: After each convolutional
+block we have a MaxPooling layer with a 2x2 window and a stride of 2. 
+Max-pooling is used to reduce the spatial dimensions of the feature maps while retaining the most important features.
 
 4. **Fully Connected Layer**: After the last convolutional block, VGG16 has 3 fully connected dense layers, followed by softmax for classification.
 The first two fully connected layers have 4096 neurons each, followed by a third fully connected layer with 1000 neurons, which is the number of classes in the ImageNet dataset for which VGG16 was originally designed.
@@ -445,11 +472,13 @@ To check the number of trainable parameters look at the summary of model
 
 LeNet-5
 ~~~~~~~~~
-It is one of the earliest pre-trained models proposed by Yann LeCun and others. It was originally trained 
-to run hand written digit classification from 0-9, of the MNIST dataset. LeNet-5 was designed to be computationally efficient, making it suitable for training on relatively small datasets and deploying on resource-constrained devices.
-The architecture is relatively simple compared to more modern deep learning architectures, which makes it easy to understand, implement, and debug.
+LeNet-5 is one of the earliest pre-trained models proposed by Yann LeCun and others. It was originally trained 
+to run hand written digit classification from 0-9, of the MNIST dataset. LeNet-5 was designed to be 
+computationally efficient, making it suitable for training on relatively small datasets and deploying 
+on resource-constrained devices. The architecture is relatively simple compared to more modern deep 
+learning architectures, which makes it easy to understand, implement, and debug.
 
-It cannot be directly imported from Keras applications. So we will have to implement it using keras sequential model
+It cannot be directly imported from Keras, but we can easily implement it using a Sequential model
 as follows:
 
 .. code-block:: python
@@ -483,24 +512,34 @@ Summary
 
 VGG16 Vs LeNet-5, which architecture to choose from?
 
-``Complexity``: VGG16 is a deep convolutional neural network with 16 layers (including convolutional and pooling layers) and a large number of parameters. It is more suitable for ``complex`` image classification tasks with large datasets.
-
-LeNet-5 is a shallow convolutional neural network with only 5 layers, making it less complex compared to VGG16. It is suitable for simpler image classification tasks with smaller datasets.
-
-``Pretraining``: VGG16 is pretrained on the ImageNet dataset, which contains millions of images across thousands of categories. If your task is similar to ImageNet, using VGG16 as a feature extractor or fine-tuning it on your dataset can yield good results.
-
-LeNet-5 was originally designed for handwritten digit recognition on the MNIST dataset. If your task is similar to MNIST (e.g., digit recognition, simple pattern recognition), LeNet-5 can be a good choice.
-
-``Image Size``: VGG16 expects input images to have a minimum size of 32x32 pixels. It performs better with larger images, typically 224x224 pixels, due to its deeper architecture and larger receptive fields. 
-
-LeNet-5 is designed for small grayscale images of size 28x28 pixels. It is less suitable for larger or more complex images due to its limited capacity and smaller receptive fields.
-
-``Computational Resources``: Training VGG16 from scratch or fine-tuning it on large datasets requires significant computational resources (GPU, memory, and time).
+* Complexity: VGG16 is a deep convolutional neural network with 16 layers (including convolutional and pooling layers) 
+  and a large number of parameters. It is more suitable for complex image classification tasks with large datasets.
   
-Training LeNet-5 is computationally less demanding compared to VGG16, making it suitable for environments with limited computational resources.
+  LeNet-5 is a shallow convolutional neural network with only 5 layers, making it less complex compared to VGG16. 
+  It is suitable for simpler image classification tasks with smaller datasets.
+
+* Pretraining: VGG16 has been pretrained on the ImageNet dataset which we will talk about more in a later lecture, 
+  but ImageNet contains millions of images across thousands of categories. If your task contains image that are 
+  similar to ImageNet, using VGG16 as a feature extractor or fine-tuning it on your dataset can yield good results.
+
+  LeNet-5 was originally designed for handwritten digit recognition on the MNIST dataset. If your task is similar to  
+  MNIST (e.g., digit recognition, simple pattern recognition), LeNet-5 can be a good choice.
+
+* Image Size: VGG16 expects input images to have a minimum size of 32x32 pixels. It performs better with 
+  larger images, typically 224x224 pixels, due to its deeper architecture and larger receptive fields. 
+
+  LeNet-5 is designed for small grayscale images of size 28x28 pixels. It is less suitable for larger or more 
+  complex images due to its limited capacity and smaller receptive fields.
+
+* Computational Resources: Training VGG16 from scratch or fine-tuning it on large datasets requires significant 
+  computational resources (GPU, memory, and time).
+  
+  Training LeNet-5 is computationally less demanding compared to VGG16, making it suitable for environments 
+  with limited computational resources.
 
 
-References
+References and Additional Resources
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 1. `Convolution Animation <https://towardsdatascience.com/intuitively-understanding-convolutions-for-deep-learning-1f6f42faee1>`_ 
 2. `Types of CNN Architectures <https://towardsdatascience.com/various-types-of-convolutional-neural-network-8b00c9a08a1b>`_ 
