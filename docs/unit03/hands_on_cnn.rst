@@ -390,7 +390,7 @@ Let's fit the model and run 20 epochs
 
 .. code-block:: python3 
 
-    #fit the model from image generator
+    # fit the model from image generator
     history = model_lenet5.fit(
                 train_rescale_ds,
                 batch_size=32,
@@ -398,34 +398,63 @@ Let's fit the model and run 20 epochs
                 validation_data=val_rescale_ds
     )
 
-We see even lower validation accuracy with this model and you might see high training accuracy, indicating overfitting.
-There are techniques such as ``data-augmentation`` and adding ``Dropout`` layers to the model, to overcome overfitting. Time permitting we will disscuss them.
+We see even lower validation accuracy with this model. 
+
+.. code-block:: console
+
+    Epoch 15/20
+    17/17 [==============================] - 2s 75ms/step - loss: 0.6182 - accuracy: 0.7936 - val_loss: 1.0043 - val_accuracy: 0.5263
+    Epoch 16/20
+    17/17 [==============================] - 2s 75ms/step - loss: 0.5875 - accuracy: 0.7730 - val_loss: 0.9242 - val_accuracy: 0.5789
+    Epoch 17/20
+    17/17 [==============================] - 2s 76ms/step - loss: 0.5795 - accuracy: 0.8105 - val_loss: 0.9585 - val_accuracy: 0.5338
+    Epoch 18/20
+    17/17 [==============================] - 2s 75ms/step - loss: 0.5275 - accuracy: 0.8443 - val_loss: 0.9898 - val_accuracy: 0.5414
+    Epoch 19/20
+    17/17 [==============================] - 2s 75ms/step - loss: 0.5223 - accuracy: 0.8105 - val_loss: 0.9238 - val_accuracy: 0.5714
+    Epoch 20/20
+    17/17 [==============================] - 2s 75ms/step - loss: 0.4684 - accuracy: 0.8518 - val_loss: 0.9088 - val_accuracy: 0.5564    
+
+How does the validation accuracy change over the epochs? Could we possibly execute more epochs and 
+get a better result? Consider trying 50, 100, or 200 epochs. 
+
+You may see some signs of overfitting. There are techniques such as *data-augmentation* and 
+adding ``Dropout`` layers to the model that can overcome overfitting. Time permitting, we will discuss these in a 
+future lecture. 
 
 VGG16
 ~~~~~~~~~~
+For our last CNN, let's create a VGG16 model. For this we will use the pre-trained VGG16 model, 
+but note that the pre-trained model only includes the convolutional and pooling layers (i.e., 
+the feature extraction layers). We still need to add the prediction layers and fit them. 
 
-Let's now create a VGG16 model. For this we will use the pre-trained VGG16 model.
+Note that we also add a ``Dropout`` layer in the prediction layers to prevent overfitting. Perhaps
+counterintuitively, the Dropout layer randomly sets a sampling of input units to 0! If you 
+are interested, you can read more about it from the Keras documentation 
+`here <https://keras.io/api/layers/regularization_layers/dropout/>`_.
+
 
 .. code-block:: python3 
    
-    # Import VGG16 model from Keras applications
+    # Import the pre-built VGG16 model
     from keras.applications.vgg16 import VGG16
 
-    #Load the pre-trained VGG16 model with weights trained on ImageNet
+    # Load the pre-trained VGG16 model with weights trained on ImageNet
     vgg_model = VGG16(weights='imagenet', include_top = False, input_shape = (150,150,3))
     vgg_model.summary()
 
-    # Making all the layers of the VGG model non-trainable. i.e. freezing them
+    # Make all the layers of the VGG model non-trainable. i.e. freeze them. This will
+    # provide a big computational savings when it comes to training. 
     for layer in vgg_model.layers:
         layer.trainable = False
 
-    # Initializing the model
+    # Initialize the model
     new_model = models.Sequential()
 
-    # Adding the convolutional part of the VGG16 model from above
+    # Add the feature extraction layers from the VGG16 model above
     new_model.add(vgg_model)
 
-    # Flattening the output of the VGG16 model because it is from a convolutional layer
+    # Flatten the output of the VGG16 model
     new_model.add(layers.Flatten())
 
     # Adding a dense input layer
@@ -445,15 +474,38 @@ Let's now create a VGG16 model. For this we will use the pre-trained VGG16 model
     # Summary of the model
     new_model.summary()
 
-    #fit the model from image generator
+    # fit the model from image generator
     history = new_model.fit(
                 train_rescale_ds,
                 batch_size=32,
                 epochs=20,
                 validation_data=val_rescale_ds,
     )
+ 
+It turns out that this model gives us the best validation and test accuracy to 
+solve the food classification problem:
+
+.. code-block:: console
+
+    Epoch 15/20
+    17/17 [==============================] - 19s 1s/step - loss: 0.0189 - accuracy: 0.9962 - val_loss: 0.4328 - val_accuracy: 0.9023
+    Epoch 16/20
+    17/17 [==============================] - 20s 1s/step - loss: 0.0173 - accuracy: 0.9981 - val_loss: 0.5381 - val_accuracy: 0.8947
+    Epoch 17/20
+    17/17 [==============================] - 20s 1s/step - loss: 0.0074 - accuracy: 0.9981 - val_loss: 0.4901 - val_accuracy: 0.9023
+    Epoch 18/20
+    17/17 [==============================] - 20s 1s/step - loss: 0.0123 - accuracy: 0.9981 - val_loss: 0.5682 - val_accuracy: 0.8947
+    Epoch 19/20
+    17/17 [==============================] - 20s 1s/step - loss: 0.0118 - accuracy: 0.9962 - val_loss: 0.4678 - val_accuracy: 0.9023
+    Epoch 20/20
+    17/17 [==============================] - 20s 1s/step - loss: 0.0102 - accuracy: 0.9962 - val_loss: 0.4684 - val_accuracy: 0.9023    
+
+.. code-block:: python3 
 
     test_loss, test_accuracy = new_model.evaluate(test_rescale_ds, verbose=0)
- 
-It turns out that this model gives us the best validation and test accuracy to solve the food classification problem.
+    print(f"Loss on test: {test_loss}")
+    print(f"Accuracy on test: {test_accuracy}")
+
+    Loss on test: 0.4201587438583374
+    Accuracy on test: 0.898809552192688
 
