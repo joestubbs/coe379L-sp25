@@ -100,6 +100,8 @@ def do_full_post_test():
                     print(f"POST /inference format correct for input {p} BUT prediction was not-correct!")
                     p = response.json()['prediction'].lower()
                     print(f"--> Your prediction: {p}; correct prediction: no_damage")
+                    
+                total_correct = total_correct + prediction  
 
     accuracy = float(total_correct)/float(total)
 
