@@ -86,7 +86,9 @@ b) An inference endpoint that can perform classification on an image.
    It must accept a binary message payload containing the image (without any preprocessing) to 
    classify, and it must return a JSON response containing the results of the inference. The JSON
    response must include a top-level attribute, ``prediction``, with values ``damage`` or ``no_damage``.
-   For example: ``{ "prediction": "damage"}``.
+   For example: ``{ "prediction": "damage"}``. The grader is automated and will be looking for **these 
+   exact values** so be sure to review your code carefully and make sure it conforming to the 
+   requirements (and use the grader code, see below).
    
    
 **Note:** We are providing you with test code that will call your server (the ``GET /summary`` and the 
