@@ -83,12 +83,18 @@ a) A model summary endpoint providing metadata about the model. **Note:** This e
    accept requests to: ``GET /summary``. 
 b) An inference endpoint that can perform classification on an image. 
    **Note:** This endpoint must accept requests to ``POST /inference``. 
-   It must accept a binary message payload containing the image to 
-   classify, and it must return a JSON response containing the results of the inference. 
+   It must accept a binary message payload containing the image (without any preprocessing) to 
+   classify, and it must return a JSON response containing the results of the inference. The JSON
+   response must include a top-level attribute, ``prediction``, with values ``damage`` or ``no_damage``.
+   For example: ``{ "prediction": "damage"}``.
    
    
-**Note:** We will provide you with test code that will call your server (the ``GET /summary`` and the 
-``POST /inference`` endpoints) and evaluate the responses. Failure to conform to the correct 
+**Note:** We are providing you with test code that will call your server (the ``GET /summary`` and the 
+``POST /inference`` endpoints) and evaluate the responses to make sure they are in the correct format 
+and the outputs can be processed by our grader. You can find the test grader code with instructions on 
+how to run the code `here <https://github.com/joestubbs/coe379L-sp25/tree/master/code/Project3>`_. 
+
+Failure to conform to the correct 
 specification for the inference server will lead to significant penalty on the project grade.
 
 Package your model inference server in a Docker container image and push the image to the 
