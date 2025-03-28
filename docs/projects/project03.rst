@@ -79,13 +79,18 @@ reconstituted easily.
 Develop a simple inference server to serve your trained model over HTTP. There should be 
 at least two endpoints:
 
-a) A model summary endpoint providing metadata about the model. **Note:** This endpoint must be
-   accept requests to: ``GET /summary``. 
-b) An inference endpoint that can perform classification on an image. 
+a) A model summary endpoint ``GET /summary`` providing metadata about the model. 
+   
+   **Note:** This endpoint must be
+   accept requests to: ``GET /summary`` and it must return a **JSON** response. 
+
+b) An inference endpoint ``POST /inference`` that can perform classification on an image. 
+   
    **Note:** This endpoint must accept requests to ``POST /inference``. 
-   It must accept a binary message payload containing the image (without any preprocessing) to 
-   classify, and it must return a JSON response containing the results of the inference. The JSON
-   response must include a top-level attribute, ``prediction``, with values ``damage`` or ``no_damage``.
+   It must accept a **binary message** payload containing the image **without any preprocessing** to 
+   classify, and it must return a **JSON** response containing the results of the inference. The JSON
+   response must be a JSON **object** (not a list) and include a top-level attribute, 
+   ``prediction``, with values ``damage`` or ``no_damage``.
    For example: ``{ "prediction": "damage"}``. The grader is automated and will be looking for **these 
    exact values** so be sure to review your code carefully and make sure it conforming to the 
    requirements (and use the grader code, see below).
@@ -99,9 +104,13 @@ how to run the code `here <https://github.com/joestubbs/coe379L-sp25/tree/master
 Failure to conform to the correct 
 specification for the inference server will lead to significant penalty on the project grade.
 
-Package your model inference server in a Docker container image and push the image to the 
-Docker Hub. Provide instructions for starting and stopping your inference server using 
+Package your model inference server in a **Docker container image** and push the image to the 
+Docker Hub. Be sure that the image is an **x86** architecture image. 
+Provide instructions for starting and stopping your inference server using 
 the docker-compose file. Provide examples of how to make requests to your inference server. 
+**Note:** We strongly recommend that you build the image on your class VM, as this is x86 
+architecture. If you build your image on a Mac, you will create an image in the ARM architecture 
+which will not meet the requirements. 
 
 **Bonus:** We will evaluate each of the model inference servers submitted against 
 a reserved dataset. The top three models will get bonus points as follows:
