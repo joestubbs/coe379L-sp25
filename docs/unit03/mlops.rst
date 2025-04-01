@@ -342,6 +342,345 @@ about our model.
       app.run(debug=True, host='0.0.0.0')
 
 The code at the bottom just runs the Flask development server whenever our Python model ``api.py``
-is invoked from the command line. For more details on Flask, see COE 332 
+is invoked from the command line. Thus, to run the server, one needs to install Flask and then 
+execute
+
+
+.. code-block:: console
+
+  $ python api.py 
+
+
+Then, in a separate terminal, one can use ``curl`` to test the endpoint: 
+
+.. code-block:: console
+
+   curl http://127.0.0.1:5000/models/clothes/v1
+   {
+      "description": "Classify images containing articles of clothing",
+      "name": "clothes",
+      "number_of_parameters": 133280,
+      "version": "v1"
+   }
+
+
+For more details on Flask, see COE 332 
 `notes <https://coe-332-sp23.readthedocs.io/en/latest/unit04/intro_to_flask.html>`_ or the official
 `documentation <https://flask.palletsprojects.com/en/3.0.x/>`_. 
+
+
+.. note:: 
+
+   The class Jupyter container image does not include the Flask package. If you want, you 
+   can install it with ``pip install Flask==3.1.0``
+
+Packaging the Inference Server with Docker 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Now that we have a minimal server, let's build a docker image for it so we can test it out. 
+We'll use a Dockerfile for that. The basic steps are: 
+
+1) Start with an official Python image
+2) Install the Flask library 
+3) Copy our source code, ``api.py`` 
+4) Set the default command in the container to run our program. 
+
+Here is the Dockerfile that does that: 
+
+.. code-block:: console 
+
+   # Image: jstubbs/ml-clothes-api
+
+   FROM python:3.11
+
+   RUN pip install Flask==3.1.0
+   COPY api.py /api.py
+
+
+   CMD ["python", "api.py"]
+
+If you need a refresher on Docker, see the COE 332 `notes <https://coe-332-sp23.readthedocs.io/en/latest/unit05/containers_1.html>`_. 
+
+To build our image, we use the ``docker build`` command. We'll use the ``-t`` flag to tag it with a name. 
+I'll use ``jstubbs/ml-clothes-api``. You'll want to change the username ``jstubbs`` to your own username 
+on Docker Hub. 
+
+.. code-block:: console 
+
+   docker build -t jstubbs/ml-clothes-api .
+
+.. note:: 
+
+   You will not be able to build the docker image from within your Jupyter notebook server terminal. 
+   This is because docker itself is not installed/mounted in the container. Instead, you should SSH 
+   directly to your VM and execute the build command there. 
+
+Now that our image is built, 
+we can start a container for our inference server using the ``docker run`` command. We'll use the 
+following flags to that command:
+
+* ``-it``: run the container in interactive mode and attach to stdout. This is helpful for seeing the logs
+  from our Flask server. 
+* ``--rm``: remove the container once we stop it. 
+* ``-p 5000:5000``: map port 5000 in the container to port 5000 on the host. This is important because 
+  we want to be able to make requests to our container. 
+
+We need to then specify the image name (in my case ``jstubbs/ml-clothes-api``), but we don't need to specify 
+a program to run since we set the default command using the ``CMD`` instruction in our Dockerfile. 
+Here is the full command to run our server container: 
+
+.. code-block:: console 
+
+   docker run -it --rm -p 5000:5000 jstubbs/ml-clothes-api
+
+Let's check that it is working. In another window on your VM, use ``curl`` to try the GET route:
+
+.. code-block:: console
+
+   curl localhost:5000/models/clothes/v1
+   {
+      "description": "Classify images containing articles of clothing",
+      "name": "clothes",
+      "number_of_parameters": 133280,
+      "version": "v1"
+   }
+
+Looks good! Now, let's go back and add the inference route. 
+
+Adding the Inference Route 
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Our real goal is to make inference available as a service. For that, we need to add the POST route. 
+That route should take an image, apply the model to it, and return the prediction. We'll need 
+tensorflow so that we can load and execute the model, and of course, we'll need our model file. 
+Let's start by adding those to the Dockerfile. 
+
+.. code-block:: console 
+   :emphasize-lines: 5,8
+
+   # Image: jstubbs/ml-clothes-api
+
+   FROM python:3.11
+
+   RUN pip install tensorflow==2.15
+   RUN pip install Flask==3.0
+
+   COPY models /models
+   COPY api.py /api.py
+
+
+   CMD ["python", "api.py"]
+
+Back in the ``api.py`` file, we need to implement the POST route. We'll want to load the model 
+as well. It's good to load the model on server start up so that the model is ready to go when 
+a request comes. 
+
+As for the implementing the route itself, we have some choices about what kind of data the user 
+will send, with different choices offering pros and cons. For example, we could: 
+
+1. Require the user send a raw image file, such as a png or jpg. 
+2. Require the user to send a numpy array, serialized as some kind of binary stream (e.g., using the 
+   pickle library)
+3. Require the user to send a JSON list of numbers. 
+
+Additionally, within options 2) and 3), we can require the user to preproess the data before sending 
+(e.g., normalizing) or we can perform that function for them. In all three options, we could also 
+consider allowing the user to send a batch of images to inference, instead of just 1. 
+
+Option 1) is appealing for some use cases, but for this dataset we load the data directly into numpy 
+using the ``fashion_mnist.load_data()`` function, so in some ways, this option isn't the most 
+convenient for our demonstration purposes. 
+
+Option 2) is likely more efficient than option 3), but it has the downside of only working for Python 
+clients. If our application will be written in other languages, requiring a numpy array would be 
+overly imposing. It's also complicated to implement, as we would need client and server to agree on 
+a scheme (e.g., pickling)
+
+We'll go for option 3). It's easy, supports multiple languages and lends it self perfectly well to 
+batching, though we won't implement that here. Instead, we'll assume the user sends us one image, 
+and we'll take care of preprocessing it. 
+
+.. note:: 
+
+   In Project 2 you are required to use Option 1. We will provide some guidelines on how to 
+   handle that case later in this module, but consult the offical Flask 
+   `documentation <https://flask.palletsprojects.com/en/stable/patterns/fileuploads/>`_ for 
+   full details. 
+
+To do that preprocessing, we'll convert the JSON list to a numpy array. We'll then reshape it so 
+that it conforms to the shape required for the ``predict()`` method (remember, like with sklearn, 
+the Keras ``model.predict()`` function expects a batch of images, so we'll need to pad an extra 
+dimension onto the array.)
+
+.. code-block:: python3 
+
+   def preprocess_input(im):
+      """
+      Converts user-provided input into an array that can be used with the model. 
+      This function could raise an exception.
+      """
+      # convert to a numpy array 
+      d = np.array(im)
+      # then add an extra dimension 
+      return d.reshape(1, 28, 28)
+
+With that code in place, we can write the route. We specify ``POST`` as the method and we use 
+the ``request.json`` object, which is a dictionary, to get at the request data. We are assuming 
+the message contains a single object, ``image``, with the JSON list. 
+
+Note that we also handle two errors cases:
+
+1. The request does not contain json with an ``image`` field. 
+2. The ``image`` field cannot be converted to a numpy array and reshaped. 
+
+Case 2) causes the ``preprocess_input()`` function to raise an exception, so we use a ``try...except``
+block.  
+
+To apply the model, we use ``model.predict()`` on the preprocessed data. Note that the result is a 
+numpy array, which is not JSON serializable, so at a minimum we'll need to cast it to a normal Python 
+list; we do that using the ``.tolist()`` method: 
+
+.. code-block:: python3 
+
+   @app.route('/models/clothes/v1', methods=['POST'])
+   def classify_clothes_image():
+      im = request.json.get('image')
+      if not im:
+         return {"error": "The `image` field is required"}, 404
+      try:
+         data = preprocess_input(im)
+      except Exception as e:
+         return {"error": f"Could not process the `image` field; details: {e}"}, 404
+      return { "result": model.predict(data).tolist()}
+
+Be sure to add the necessary imports and load the model object. Here is the complete solution: 
+
+.. code-block:: python3 
+
+   from flask import Flask, request
+   import tensorflow as tf 
+   import numpy as np 
+
+   app = Flask(__name__)
+
+   model = tf.keras.models.load_model('models/clothes.keras')
+
+   @app.route('/models/clothes/v1', methods=['GET'])
+   def model_info():
+      return {
+         "version": "v1",
+         "name": "clothes",
+         "description": "Classify images containing articles of clothing",
+         "number_of_parameters": 133280
+      }
+
+   def preprocess_input(im):
+      """
+      Converts user-provided input into an array that can be used with the model. 
+      This function could raise an exception.
+      """
+      # convert to a numpy array 
+      d = np.array(im)
+      # then add an extra dimension 
+      return d.reshape(1, 28, 28)
+      
+   @app.route('/models/clothes/v1', methods=['POST'])
+   def classify_clothes_image():
+      im = request.json.get('image')
+      if not im:
+         return {"error": "The `image` field is required"}, 404
+      try:
+         data = preprocess_input(im)
+      except Exception as e:
+         return {"error": f"Could not process the `image` field; details: {e}"}, 404
+      return { "result": model.predict(data).tolist()}
+      
+      
+   # start the development server
+   if __name__ == '__main__':
+      app.run(debug=True, host='0.0.0.0')   
+
+
+Handling Raw Files
+^^^^^^^^^^^^^^^^^^
+
+In Project 3, you will need to handle raw files passed directly to your Flask server (option 1) described above).
+The idea is to allow the user to pass a file as a mutli-part/form. The parts of the form are still named, 
+so we'll assume the file has been added to the form under the ``image`` key. We need a way to get at that file 
+from within our Flask route. 
+
+To do so, use Flask's built-in ``request.files`` object and look for a key ``image``. Here is a snippet 
+of code illustrating the technique: 
+
+.. code-block:: python 
+
+   @app.route('/??', methods=['POST'])
+   def upload_file():
+      
+       # check if the post request has the file part
+      if 'image' not in request.files:
+         # if the user did not pass the image under `image`, we don't know what they are
+         # don't, so return an error.
+         return '{"error": "Invalid request; pass a binary image file as a multi-part form under the image key."}'
+      # get the data 
+      data = request.files['image']
+      # do something with data...
+   
+
+Testing the Inference Server 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+We'll use ``requests`` to test our server because it will make it easy to work with the test data. 
+The process is straightforward --- we select an item from the ``X_test`` array and cast it to a list
+using ``tolist()``.  
+
+.. code-block:: python3 
+
+   import requests 
+
+   # grab an entry from X_test -- here, we grab the first one
+   l = X_test[0].tolist()
+
+   # make the POST request passing the sinlge test case as the `image` field: 
+   rsp = requests.post("http://172.17.0.1:5000/models/clothes/v1", json={"image": l})
+   
+   # print the json response 
+   rsp.json()
+
+   {'result': [[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]]}
+
+Note that our inference server returns the "raw" result of ``predict()``, which is an array. 
+If we compare that to the actual label, we'll see that our model got the right answer: 
+
+.. code-block:: python3 
+
+   y_test_cat[0]
+   -> array([0., 0., 0., 0., 0., 0., 0., 0., 0., 1.])
+
+
+Note that to send an inference request to a Flask server that is expecting a multi-part form, 
+we need to use the ``files`` argument, passing binary data as part of a dictionary where the 
+key is the expected one (in our case, ``image``). Here is an example: 
+
+.. code-block:: 
+
+   # create the files dictionary 
+    data = {"image": open(path, 'rb')}
+
+    # send the POST request
+    rsp = requests.post(url, files=data)
+    
+    # process the response... 
+    # . . .
+
+We have written a complete grader module that you can use to test your project 3 inference servers. 
+See the code and the README in the class repository 
+`here <https://github.com/joestubbs/coe379L-sp25/tree/master/code/Project3>`_. 
+
+
+Additional References
+----------------------
+1. Machine Learning Systems with TinyML. Chapter 14: Embedded AIOps. https://harvard-edge.github.io/cs249r_book/contents/ops/ops.html#key-components-of-mlops
+2. Tensorflow Documentation, v2.15: tf.saved_model.save. https://www.tensorflow.org/versions/r2.15/api_docs/python/tf/saved_model/save
+3. Tensorflow Serving with Docker. https://www.tensorflow.org/tfx/serving/docker
+
+
+   
+
