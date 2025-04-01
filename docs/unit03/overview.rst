@@ -9,3 +9,4 @@ Unit 3: Advanced Techniques for Machine Learning
    project02_summary
    cnn
    hands_on_cnn
+   mlops
