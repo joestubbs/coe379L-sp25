@@ -17,7 +17,7 @@ code it helped you generate, which errors it helped you debug, etc. Please do no
 generate the report for part 3. 
 
 **Late Policy:**  This project is due during the final exam period for our class. As a result, 
-we will not be able to accept late projects. 
+we will **not be able to accept late projects**. 
 
 
 **Project Description:** Open-ended ML
@@ -47,14 +47,15 @@ proposals by the due date will lose the 4 points and will still be required to g
 approved in order to submit the final project. **Commit your initial proposal to your project 4 
 git repository.** 
 
-We will review all initial proposals by end of day Wednesday, April 17th. For proposals that 
-need modifications, we will notify you before class on Thursday, April 18th, and you should 
+We will do our best to review all initial proposals by end of day Tuesday, April 22nd. For proposals that 
+need modifications, we will notify you before class on Tuesday, April 22nd, and you should 
 schedule time with us soon thereafter to understand any changes that need to be made. We will 
 make the following times available for people to discuss: 
 
-* Thursday, April 18th: 1-2pm; 3:30pm (after class)
-* Friday, April 19th: most times will be available 
+* Tuesday, April 22nd: 1-2pm; and 3:30pm (after class)
+* Thursday, April 24th: 1-2pm; 3:30pm (after class)
  
+
 Git Repository 
 --------------
 The project products should be saved into an organized git repository, similar to the way 
