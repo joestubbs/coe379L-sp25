@@ -1,11 +1,11 @@
 Project 04 - 35 Points
 ======================
 
-**Date Assigned:** Thursday, April 3, 2024. 
+**Date Assigned:** Thursday, April 3, 2025. 
 
-**Initial Proposal Due Date:** Thursday, April 17, 2024. 
+**Initial Proposal Due Date:** Thursday, April 17, 2025. 
 
-**Due Date:** Monday, May 5, 2024, 5 pm CST. (The day of the Final Exam for this class)
+**Due Date:** Monday, May 5, 2025, 5 pm CST. (The day of the Final Exam for this class)
 
 **Group Assignment:** Students can work individually or in groups of two on this assignment. 
 When working in groups, we expect both students to contribute equally to all aspects of the 
@@ -60,7 +60,7 @@ Git Repository
 The project products should be saved into an organized git repository, similar to the way 
 we have done the other projects. The initial proposal should be among the documents included 
 in your git repository, and it should be there by the initial proposal due date 
-(Tuesday, April 16). 
+(Thursday, April 17). 
 
 Final Report and Video
 -----------------------
