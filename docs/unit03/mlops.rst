@@ -414,6 +414,14 @@ on Docker Hub.
    This is because docker itself is not installed/mounted in the container. Instead, you should SSH 
    directly to your VM and execute the build command there. 
 
+.. note:: 
+
+   Executing the docker build command establishes the current working directory (and all subdirectories)
+   as the "context" for the build. Note that if you have files owned by the root user (or any other user)
+   in the current directory or any subdirectories, the docker build will fail. You can change ownership 
+   of files (recursively) to the ``ubuntu`` user using a command like this 
+    ``chown -R ubuntu:ubutun <some_path>``.
+
 Now that our image is built, 
 we can start a container for our inference server using the ``docker run`` command. We'll use the 
 following flags to that command:
@@ -500,7 +508,7 @@ and we'll take care of preprocessing it.
 
 .. note:: 
 
-   In Project 2 you are required to use Option 1. We will provide some guidelines on how to 
+   In Project 3 you are required to use Option 1. We will provide some guidelines on how to 
    handle that case later in this module, but consult the offical Flask 
    `documentation <https://flask.palletsprojects.com/en/stable/patterns/fileuploads/>`_ for 
    full details. 
