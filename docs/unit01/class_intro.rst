@@ -3,7 +3,7 @@ Class Introduction
 
 | **Welcome to:**
 |
-| COE 379L: Software Design For Responsible Intelligent Systems, Spring 2025
+| COE 379L (15156): Software Design For Responsible Intelligent Systems, Spring 2025
 | Department of Aerospace Engineering and Engineering Mechanics
 | The University of Texas at Austin
 
