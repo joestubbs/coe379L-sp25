@@ -35,7 +35,7 @@ Background on Natural Language Processing (NLP)
 The transformer architecture that we will introduce in the next section was originally built to 
 deal with natural language processing (NLP) tasks, specifically the task of language translation;
 that is, translating text from English to Spanish or from Russian to French, etc. In general,
-NPL focuses on tasks involving computer understanding of text data, such as that in books, 
+NLP focuses on tasks involving computer understanding of text data, such as that in books, 
 articles, web pages, social media posts, etc. Some common NLP tasks include the following: 
 
 1. *Sentiment Analysis:* what is the sentiment expressed by the text? For example, does the author 
@@ -59,7 +59,7 @@ attempted automatically translate Russian sentences to English.
   Russian sentences to English. The scientists claimed at that time that automatic language translation 
   would be solved by machines within 3 to 5 years. 
 
-Here is a screenshot from an early, famous NPL program called ELIZA, developed at MIT between 1964 and 
+Here is a screenshot from an early, famous NLP program called ELIZA, developed at MIT between 1964 and 
 1967. THe ELIZA program prompted users with questions in natural language text and enabled them to 
 submit answers, also in natural language. The goal was to simulate a psychotherapy session. 
 
@@ -70,7 +70,7 @@ submit answers, also in natural language. The goal was to simulate a psychothera
 ELIZA was able to resemble human-like behaviors on occasion, though its practical use was relatively 
 limited.
 
-In the 1970s, NPL researchers introduced the notion of *ontologies*, that is, formally structured and 
+In the 1970s, NLP researchers introduced the notion of *ontologies*, that is, formally structured and 
 controlled vocabularies for specific topics or areas. It was during this time that the first chatbot 
 programs were written. In the early 1970s, the chat program PARRY was developed and hooked up to 
 ELIZA resulting in the following dialog. 
@@ -132,25 +132,40 @@ standard Jupyter port (8888) to the host. Here is a complete command:
 
 .. code-block:: console 
 
-  docker run --name nb -it --rm -v $(pwd)/hf_cache:/root/.cache/huggingface \
-    -v $(pwd)/nb-data:/root/nb-data -p 8888:8888  jstubbs/coe379l-llm jupyter-notebook --allow-root --ip 0.0.0.0
+  # start the container in the background
+  docker run --name nb -it --rm -v $(pwd)/hf_cache:/code/.cache/huggingface  -v $(pwd)/nb-data:/code -p 8888:8888 -d  jstubbs/coe379l-llm
+
+  # exec into it
+  docker exec -it nb bash
+
+  # from within the container, start jupyter,
+  # must all root and all interfaces
+  jupyter-notebook --ip 0.0.0.0  --allow-root
 
 .. note:: 
 
-  You will need to have the SSH tunnel running, just like with the other image, to connect to the 
-  notebook server. 
 
-
-As with the previous image, copy the URL out of the logs. It should look similar to this, with a different 
-token:
+Take a note of the logs that are output. You should see some logs that looks similar to 
+the following:
 
 .. code-block:: console 
 
-  http://127.0.0.1:8888/tree?token=3ef14e9de6cce47b69d509a2c4b849b6cff6bd536cc4e6b6
+  To access the server, open this file in a browser:
+      file:///root/.local/share/jupyter/runtime/jpserver-13-open.html
+  Or copy and paste one of these URLs:
+      http://c18715810e34:8888/tree?token=227575a727e275de3ebe4a864e58805db3d268cc99a62230
+      http://127.0.0.1:8888/tree?token=227575a727e275de3ebe4a864e58805db3d268cc99a62230
 
+Copy the ``token=227575a727e275de3ebe4a864e58805db3d268cc99a62230`` part from the log.
+
+**In your browser** Connect to your Jupyter server using the following URL
+
+.. code-block:: console 
+
+  https://<tacc_username>.coe379.tacc.cloud/tree?token=<...THE TOKEN...>
 
 If you open that URL in your browser, you should see the Jupyter Lab environment. In this image, 
-the files are located in ``root``, so you will want to navigate there in the UI. 
+the files are located in ``code``, so you will want to navigate there in the UI. 
 
 Let's create a new notebook file to test out the transformers library. To start with, make sure 
 you can import the library:
