@@ -7,9 +7,9 @@ We'll motivate all of this by briefly demoing the transformers library.
 
 .. note::
 
-  We'll use a new image, ``jstubbs/coe379l-llm`` available on the Docker Hub for this unit. 
+  We'll use a new image, ``jstubbs/coe379l-llm:sp25`` available on the Docker Hub for this unit. 
   This image contains the transformers library as well as a number of dependent packages 
-  needed to make the transformer models work. It is a large image, currently about 12.5 GB.
+  needed to make the transformer models work. It is a large image, currently about 16 GB.
   Start pulling the image at the beginning of class so that you will have it on your VM. 
 
 By the end of this module, students should be able to:
@@ -112,7 +112,16 @@ it on your class VM and it is installed in the LLM class docker image, mentioned
 
 As mentioned, we'll be using a slightly different docker image as we work through the 
 examples for this unit. The image is ``jstubbs/coe379l-llm``. Be aware that it is a large
-image --- over 12 GB. 
+image --- over 16 GB. 
+
+You may need to make space on your VM to be able to download this image. You have a few options: 
+
+* Clean up existing docker images: Use ``docker image ls`` to see all of the images that you have 
+  on your machine, and use ``docker rmi <image>`` to remove any images you no longer need. 
+* Look for other kinds of large files: Use a command like ``du`` to find files and folders. 
+  Consider combining it with ``sort``, ``head``, etc., to make the output easier to navigate. Also, 
+  use ``sudo`` to be able to see all files. Here is a one-line command I often use to find the 20 largest 
+  directories:  ``sudo du -ah / | sort -rh | head -n 20``. 
 
 One thing to know is that the transformers library will enable us to download pre-trained images,
 some of which can be very large. For efficiency, transformers makes use of a disk cache to 
@@ -128,12 +137,20 @@ vm.
 
 We can start jupyter notebook server in the image just as we were doing with the previous one. 
 We mount the volumes for both our notebook files and our cache directory, and we map the 
-standard Jupyter port (8888) to the host. Here is a complete command: 
+standard Jupyter port (8888) to the host. 
+
+.. note::
+
+  You will not be able to use the command below if you have your other notebook server running. 
+  There will be conflicts with the ports and the container name (``nb``), so be sure to shut 
+  down your other notebook server before starting the new server. 
+
+Here is a complete command: 
 
 .. code-block:: console 
 
   # start the container in the background
-  docker run --name nb -it --rm -v $(pwd)/hf_cache:/code/.cache/huggingface  -v $(pwd)/nb-data:/code -p 8888:8888 -d  jstubbs/coe379l-llm
+  docker run --name nb -it --rm -v $(pwd)/hf_cache:/code/.cache/huggingface  -v $(pwd)/nb-data:/code -p 8888:8888 -d  jstubbs/coe379l-llm:sp25
 
   # exec into it
   docker exec -it nb bash
