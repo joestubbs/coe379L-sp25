@@ -564,7 +564,7 @@ popular that have been used:
 2. Map ever character to a unique integer. 
 3. Map specific word-fragments to unique integers. 
 
-In all of the options above, we using a 1-hot encoding, but each option uses a different base 
+In all of the options above, we use a 1-hot encoding, but each option uses a different base 
 vocabulary for the encoding (unique words, unique characters, and word-fragments)
 
 Option 1 produces the largest index space, as every word gets a unique integer, and there are 
@@ -587,7 +587,7 @@ in the diagram). Text passes through the tokenizer before it gets to the languag
 Language Embedding
 ^^^^^^^^^^^^^^^^^^
 The tokenization of text is a relatively straight-forward process that converts words or 
-sentences into a list of integers using a 1-hot encoding-;ike technique, but the index space will typically 
+sentences into a list of integers using a 1-hot encoding-like technique, but the index space will typically 
 be very large and we don't necessarily have a good notion of distance between similar 
 words and phrases. 
 
@@ -640,6 +640,11 @@ bottom on the left side, while the Spanish translation is flowing through the de
     :width: 800px
     :align: center
 
+Keep in mind that just like all other ML models, there is a *training phase* and an *inference phase* 
+with transformers. During training, the parameters (weights and biases) of all model components, including 
+the Embedding, Attention, and Feed-Forward layers, are updated based on stochastic gradient decent. Only 
+after sufficient training loops with sufficiently many examples will the model achieve good accuracy. 
+
 
 Transformer Architecture: Why is it successful?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -686,7 +691,7 @@ For example, with sentiment analysis, there is no need for masking, as we want t
 able to use the entire input sequence for the prediction. Therefore, we may use an encoder-only 
 model for these tasks. 
 
-On the other hand, for the task of text generation or sentence completion (e.g.,autofill), we want 
+On the other hand, for the task of text generation or sentence completion (e.g., autofill), we want 
 the model to *only* be able to use the part of the sequence that came before the prediction position. 
 Therefore, we may use a decoder-only model for these tasks.  
 
