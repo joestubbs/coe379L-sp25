@@ -150,7 +150,7 @@ Here is a complete command:
 .. code-block:: console 
 
   # start the container in the background
-  docker run --name nb -it --rm -v $(pwd)/hf_cache:/code/.cache/huggingface  -v $(pwd)/nb-data:/code -p 8888:8888 -d  jstubbs/coe379l-llm:sp25
+  docker run --name nb -it --rm -v $(pwd)/hf_cache:/root/.cache/huggingface  -v $(pwd)/nb-data:/code -p 8888:8888 -d  jstubbs/coe379l-llm:sp25
 
   # exec into it
   docker exec -it nb bash
