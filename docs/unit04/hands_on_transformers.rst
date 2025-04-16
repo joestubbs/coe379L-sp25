@@ -118,7 +118,8 @@ the hub.
 
 1. Navigate to the HuggingFace website, `here <https://huggingface.co/>`_. 
 2. Click Models to browse and search for models. As of the time of this writing there are 
-   over 595,000 models on the hub. 
+   over 1.6 million models on the hub, and that number is growing rapidly. As a point of reference, at this 
+   time last year when we taught this course there were only 595,000 models on the hub.  
 3. Click to filter by task type; we would like to search for models that can perform the 
    "Translation" task type, so we click that. 
 4. Next, select the "Languages" filter tab to filter by languages. We are interested in English to 
@@ -130,7 +131,7 @@ the hub.
 
     The models associated with the "Translation" task type. 
 
-This should filter the list of models down to around 157 models. We can see the task associated with 
+This should filter the list of models down to around 350 models. We can see the task associated with 
 each of the models ("Translation" in this case) as well as the number of downloads, 
 and the number of hearts. By clicking a model, we can see more information about it. 
 
@@ -140,7 +141,7 @@ and the number of hearts. By clicking a model, we can see more information about
 
     Translation models that include English and Spanish. 
 
-Let's select the ``Helsinki-NLP/opus-mt-es-en`` model. By clicking it we are taken to the main 
+Let's select the ``facebook/nllb-200-distilled-600M`` model. By clicking it we are taken to the main 
 page for the model. There we can see the *model card* for the model. A model card is an idea that 
 is gaining traction in the ML community. It is a separate file that accompanies the model and provides 
 additional metadata about it. On HuggingFace, model cards are always captured in markdown, contained 
@@ -150,22 +151,23 @@ in a file called README.md.
     :width: 700px
     :align: center
 
-    The model card for the the ``Helsinki-NLP/opus-mt-es-en`` model. 
+    The model card for the the ``facebook/nllb-200-distilled-600M`` model. 
 
-This particular model card doesn't have a lot of information on it, but it does include the performance 
-of this model on different *benchmarks*. More about benchmarks in a future lecture. 
+This particular model card includes information such as the number of parameters, intended use,
+and the performance 
+of the model on different *benchmarks*. More about benchmarks in a future lecture. 
 
 On the Files and Versions tab, we can see the actual physical files associated with the model. On 
 the HuggingFace Hub, models are just git repositories containing files. Note that the actual 
-serialized model has been made available for both pytorch and tensorflow (the ``pytorch_model.bin`` 
-and ``tf_model.h5`` files, respectively). We also see the README.md file which is the model's 
-model card.  
+serialized model has been made available for both pytorch (the ``pytorch_model.bin`` file) and there 
+is information about the tokenizer it uses (the ``tokenizer_config.json`` file).
+We also see the README.md file which is the model's model card.  
 
 .. figure:: ./images/HF_Hub_files.png
     :width: 700px
     :align: center
 
-    The git repository of files for the the ``Helsinki-NLP/opus-mt-es-en`` model. 
+    The git repository of files for the the ``facebook/nllb-200-distilled-600M`` model. 
 
 Working With Model IDs
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -182,20 +184,26 @@ maintained by HuggingFace itself, as opposed to the community. For example,
 
 When there is a namespace, the namespace and the model name are separated by a ``/`` character, 
 as in ``<name_space>/<model_name>`` (this is the same as on the Docker Hub). 
-In our langauge translation model example above, ``Helsinki-NLP`` is the namespace and 
-``opus-mt-es-en`` is the model name. The ``Helsinki-NLP`` namespace is owned by the 
-Language Technology Research Group at the University of Helsinki, see 
-`here <https://huggingface.co/Helsinki-NLP>`_ for more details. 
+In our langauge translation model example above, ``facebook`` is the namespace and 
+``nllb-200-distilled-600M`` is the model name. The ``facebook`` namespace is owned by 
+AI at Meta, see 
+`here <https://huggingface.co/facebook>`_ for more details. 
 
 
 .. code-block:: python3 
 
-    en_sp_translator = pipeline(model="Helsinki-NLP/opus-mt-en-es")
-    en_sp_translator("Hello, my name is Joe.")
+    en_sp_translator = pipeline(model="facebook/nllb-200-distilled-600M")
+    # we need to set the src_lang and tgt_lang, if we don't we'll get an error
+    en_sp_translator("Hello, my name is Joe.", src_lang="en", tgt_lang="es")
     -> [{'translation_text': 'Hola, mi nombre es Joe.'}]
 
 And we don't need to restrict ourselves to text tasks. We can use computer vision models just 
 as easily with the ``pipeline()`` function. Let's see an example of the "image-to-text" task. 
+
+.. note::
+
+    In order to use the image models, you will need to install the ``pillow`` package, i.e., 
+    ``! pip install pillow``. You will then need to restart your kernel. 
 
 .. code-block:: python3 
 
@@ -204,7 +212,7 @@ as easily with the ``pipeline()`` function. Let's see an example of the "image-t
 
     # use the model on an image; in this case we can simply pass it the path to a file
     image_to_text("../data/panda.jpeg")
-    -> [{'generated_text': 'a large black bear sitting on top of a rock '}]
+    -> [{'generated_text': 'a large black and white teddy bear sitting on a tree branch '}]
 
 
 .. figure:: ./images/image-to-text-panda.png
@@ -335,7 +343,7 @@ it by using the ``convert_ids_to_tokens()`` function:
 
 .. code-block:: python3 
 
-    tokenizer.convert_ids_to_tokens(d2['inputs_ids'])
+    tokenizer.convert_ids_to_tokens(d2['input_ids'])
     ->
     ['[CLS]',
     'the',
@@ -402,8 +410,9 @@ the framework we want returned, with ``"pt"`` for Pytorch and ``"tf"`` for Tenso
     tensors = d['input_ids']
     print(type(tensors), tensors.shape) 
     print(tensors)
-    -> <class 'torch.Tensor'> torch.Size([1, 12])
-    -> tensor([[ 101, 1996, 2833, 2001, 2204, 1010, 2025, 2919, 2012, 2035, 1012,  102]])
+    -> <class 'torch.Tensor'> torch.Size([1, 11])
+    -> tensor([[ 101, 1996, 2833, 2001, 2204, 1010, 2025, 2919, 2012, 2035,  102]])
+       
 
 Note the 2-dimensions, both in the shape and the output of the ``tensors`` object itself --- 
 there are double open and closed brackets (i.e., ``[[`` and ``]]``).
@@ -464,9 +473,8 @@ input to make it have the same length as the second input --- note the 0s at the
     '[PAD]']
 
 
-
 Finally, this also explains the last object returned, the ``attention_mask``. This object encodes which 
-elements of the input_ids vector should be ignored (or "masked") when fed through the network. We do not 
+elements of the ``input_ids`` vector should be ignored (or "masked") when fed through the network. We do not 
 want the padding tokens to be interpreted as part of the original input data so we mask them from the model.
 
 If we look back at the output above, we see the mask has a 0 in each of the elements where the original 
@@ -493,6 +501,7 @@ analogous to how we instantiated the tokenizer:
     from transformers import AutoModel
     model = AutoModel.from_pretrained(checkpoint)
 
+    # feed our tensors example directly into the model 
     model(tensors)
     
 We get a BaseModelOutput object which includes a large set of tensors. 
@@ -541,7 +550,7 @@ But we cannot use these features directly in any NLP task. For that, we need to 
 model, called a *head*, for the specific task we are interested in. The inputs to the head will be the outputs 
 of the base model, i.e., the output of the last hidden layer.
 
-We can get the shape out the output using the ``last_hidden_state`` attribute of an output, like so: 
+We can get the shape of an output using the output's ``last_hidden_state`` attribute, like so: 
 
 .. code-block:: python3 
 
@@ -586,12 +595,26 @@ can read more about it
 
 .. code-block:: python3 
 
+    # use the fine-tuned checkpoint 
     checkpoint = "distilbert-base-uncased-finetuned-sst-2-english"
+    
+    # load the tokenizer 
+    tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+    
+    # tokenize the input
+    inputs = tokenizer("The food was good, not bad at all.", return_tensors="pt")['input_ids']
+    
+    # load the model from the checkpoint
     model2 = AutoModelForSequenceClassification.from_pretrained(checkpoint)
-    outputs = model(inputs2)
-    outputs 
-    -> SequenceClassifierOutput(loss=None, logits=tensor([[-0.0956, -0.0271]], grad_fn=<AddmmBackward0>), 
+    
+    # compute the output using the new model
+    outputs = model2(inputs)    
+    -> SequenceClassifierOutput(loss=None, logits=tensor([[-3.9782,  4.3248]], grad_fn=<AddmmBackward0>), 
         hidden_states=None, attentions=None)
+
+Note that we are reinitializing the ``tokenizer`` object associated with the new checkpoint, and 
+we are recomputing the inputs based on that tokenizer. This is strictly speaking important, as each 
+model could in theory use a different tokenizer. 
 
 We see that the output is now a ``SequenceClassifierOutput``, which has a ``logits`` attribute with a shape: 
 
@@ -610,7 +633,7 @@ since we had previously asked for pytorch tensors:
 .. code-block:: python3 
 
     import torch
-    predictions = torch.nn.functional.softmax(outputs2.logits, dim=-1)
+    predictions = torch.nn.functional.softmax(outputs.logits, dim=-1)
     print(predictions)    
     -> tensor([[2.4772e-04, 9.9975e-01]], grad_fn=<SoftmaxBackward0>)
 
@@ -619,7 +642,7 @@ These are the probabilities of the labels the model is predicting for our senten
 
 .. code-block:: python3 
 
-    model.config.id2label
+    model2.config.id2label
     -> {0: 'NEGATIVE', 1: 'POSITIVE'}
 
 Thus, we see that the model has classified the sentence as positive with 99.97% confidence. We can wrap this up 
@@ -629,14 +652,13 @@ into a simple post-processing function that is batch-ready, as follows:
 
     def get_prediction(logits):
         results = []
-        predictions = torch.nn.functional.softmax(outputs2.logits, dim=-1)
+        predictions = torch.nn.functional.softmax(logits, dim=-1)
         for p in range(len(predictions)):
             if predictions[p][0] > predictions[p][1]:
-                results.append(model.config.id2label[0])
-            else: 
-                results.append(model.config.id2label[1])
+                results.append(model2.config.id2label[0])
+            else:
+                results.append(model2.config.id2label[1])
         return results
-
 
 **Exercise.** Let's bring everything together in a single coding exercise. The goal here is to call the 
 entire, end-to-end process on a set of inputs. We'll break it down into a series of 5 steps. 
@@ -656,40 +678,22 @@ Try coding up the following:
 
 .. code-block:: python3 
 
-    # a list of inputs to try our model on 
+    # a list of inputs to try our model on
     inputs = ["I am happy", "I am sad", "This is good", "This is bad", "I enjoyed the pizza", "I am worried about the exam"]
 
-    # tokenize the inputs; we'll need to use padding here, and we'll just grab the input_ids object 
+    # tokenize the inputs; we'll need to use padding here, and we'll just grab the input_ids object
     tokens = tokenizer(inputs, return_tensors="pt", padding=True)['input_ids']
 
-    # pass the tokens through the model 
-    outputs = model(tokens)
+    # pass the tokens through the model
+    outputs = model2(tokens)
 
-    # get predictions from our model outputs using the post-processing function 
+    # get predictions from our model outputs using the post-processing function
     predictions = get_prediction(outputs.logits)
 
     # print the prediction
     for i in range(len(inputs)):
-        print(f"Sentence: {inputs[i]}; prediction: {predictions[i]};    
+        print(f"Sentence: {inputs[i]}; prediction: {predictions[i]}");
 
-.. 
-    .. code-block:: python3 
-
-        inputs = ["I am happy", "I am sad", "This is good", "This is bad", "I enjoyed the pizza", "I am worried about the exam"]
-        tokens = tokenizer(inputs, return_tensors="pt", padding=True)['input_ids']
-        outputs = model(tokens)
-        outputs2 = model2(tokens)
-        preds1 = get_prediction(outputs.logits)
-        preds2 = get_prediction(outputs2.logits)
-        for i in range(len(inputs)):
-            print(f"Sentence: {inputs[i]}; prediction: {preds1[i]}; prediction2: {preds2[i]}")
-        -> 
-        Sentence: I am happy; prediction: POSITIVE; prediction2: POSITIVE
-        Sentence: I am sad; prediction: NEGATIVE; prediction2: NEGATIVE
-        Sentence: This is good; prediction: POSITIVE; prediction2: POSITIVE
-        Sentence: This is bad; prediction: NEGATIVE; prediction2: NEGATIVE
-        Sentence: I enjoyed the pizza; prediction: POSITIVE; prediction2: POSITIVE
-        Sentence: I am worried about the exam; prediction: NEGATIVE; prediction2: NEGATIVE    
 
 
 Additional References 
