@@ -44,10 +44,8 @@ function makes it easy to download any dataset from the Hub:
 
     The version of the ``datasets`` library installed in the class image contains a bug. You 
     will need to update the version to at least 2.15 (use ``pip install -U datasets``) to 
-    update it to the latest version. 
-
-    To complete the training section, you will also need ``scikit-learn`` and ``scipy``. You can 
-    use ``pip install scikit-learn scipy`` to add those. 
+    update it to the latest version. To complete the training section, you will also need 
+    ``scikit-learn`` and ``scipy``. You can use ``pip install scikit-learn scipy`` to add those. 
 
 .. code-block:: python3 
 
@@ -159,6 +157,7 @@ also pass ``batched=True`` to allow it to batch the inputs which is more efficie
 .. code-block:: python3 
 
     tokenized_dataset = dataset.map(preprocess, batched=True)
+
 
 Now, we still need to deal with padding. We want to only apply the padding needed for a given batch, 
 to minimize the padding used and save space. To do this, we'll introduce the idea of a *collator* 
@@ -318,10 +317,61 @@ no better than random), 1 being perfect correlation and -1 being opposite correl
 prediction from the target). Usually, a score of 0.3 is considered moderately good while a score of 0.5 
 is considered quite strong, so our fine-tuned model has performed quite well. 
 
+
+Evaluating the Model on Test 
+-----------------------------
+
+As always, we'll want to evaluate our fine-tuned model on a holdout test set. 
+Recall that the initial ``load_dataset()`` function call split the dataset into 
+a train, validate, and test sets. Therefore, we can evaluate our model on the 
+holdout test set using the ``evaluate`` function: 
+
+.. code-block:: python3 
+
+    # Evaluate the model on the holdout test set --- 
+    results = trainer.evaluate(eval_dataset=tokenized_dataset["test"])
+    print(results)
+
+
+Working With Your Own Dataset 
+------------------------------
+
+If you have your own dataset, note that you can use the ``train_test_split`` 
+function on a dataset object. This function works similarly to the scikit-learn ``train_test_split``
+function, though some features such as the stratified option, are not implemented. Also, note that the 
+function returns a single dictionary-like object, with keys for ``train`` and ``test``. 
+
+
+
+
 Loading and Saving Models 
 --------------------------
 
-Saving and loading models is straight-forward. We can load a model we have saved to disk using  
+Saving and loading models is straight-forward. First, we can use the 
+``save_model("path/to/model")`` method 
+of the ``trainer`` object to save the model we trained to a path on the disk, i.e., 
+
+.. code-block:: python3 
+
+    train.save_model("fine-tuned-bert")
+
+This actually creates a directory of files needed to load our model, e.g., 
+
+.. code-block:: console 
+
+    /code/Prep/fine-tuned-bert
+    # ls -l
+    total 262500
+    -rw-r--r-- 1 root root       569 Apr 22 17:12 config.json
+    -rw-r--r-- 1 root root 267832560 Apr 22 17:12 model.safetensors
+    -rw-r--r-- 1 root root       125 Apr 22 17:12 special_tokens_map.json
+    -rw-r--r-- 1 root root    711494 Apr 22 17:12 tokenizer.json
+    -rw-r--r-- 1 root root      1227 Apr 22 17:12 tokenizer_config.json
+    -rw-r--r-- 1 root root      5368 Apr 22 17:12 training_args.bin
+    -rw-r--r-- 1 root root    231508 Apr 22 17:12 vocab.txt    
+
+
+We can load a model we have saved to disk using  
 using the same ``AutoModel`` class that we used for training. We just need to pass the name of the 
 directory where we saved the model, e.g., 
 
