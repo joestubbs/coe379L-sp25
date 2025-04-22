@@ -159,7 +159,7 @@ of the model on different *benchmarks*. More about benchmarks in a future lectur
 
 On the Files and Versions tab, we can see the actual physical files associated with the model. On 
 the HuggingFace Hub, models are just git repositories containing files. Note that the actual 
-serialized model has been made available for both pytorch (the ``pytorch_model.bin`` file) and there 
+serialized model has been made available for pytorch (the ``pytorch_model.bin`` file) and there 
 is information about the tokenizer it uses (the ``tokenizer_config.json`` file).
 We also see the README.md file which is the model's model card.  
 
@@ -197,6 +197,9 @@ AI at Meta, see
     en_sp_translator("Hello, my name is Joe.", src_lang="en", tgt_lang="es")
     -> [{'translation_text': 'Hola, mi nombre es Joe.'}]
 
+Note the use of the ``src_lang`` and ``tgt_lang`` parameters. What happens if you don't supply those? 
+Why do you think those might be required? 
+
 And we don't need to restrict ourselves to text tasks. We can use computer vision models just 
 as easily with the ``pipeline()`` function. Let's see an example of the "image-to-text" task. 
 
@@ -220,6 +223,8 @@ as easily with the ``pipeline()`` function. Let's see an example of the "image-t
     :align: center
 
     The panda.jpeg image passed to the image_to_text pipeline. 
+
+A nice reminder that models are not perfect! 
 
 
 Model Architectures and Checkpoints
@@ -402,7 +407,7 @@ model, but we need to make two small changes to it first; those are:
    presents a batch API, just like with keras and sklearn. 
 
 We can accomplish both of these by using the ``return_tensors`` argument, passing a string representing 
-the framework we want returned, with ``"pt"`` for Pytorch and ``"tf"`` for TensorFlow. 
+the framework we want returned, with ``"pt"`` for Pytorch, ``"tf"`` for TensorFlow, etc. 
 
 .. code-block:: python3 
 
@@ -504,7 +509,7 @@ analogous to how we instantiated the tokenizer:
     # feed our tensors example directly into the model 
     model(tensors)
     
-We get a BaseModelOutput object which includes a large set of tensors. 
+We get a ``BaseModelOutput`` object which includes a large set of tensors:
 
 .. code-block:: shell 
 
