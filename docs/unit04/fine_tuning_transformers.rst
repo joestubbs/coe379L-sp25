@@ -42,10 +42,12 @@ function makes it easy to download any dataset from the Hub:
 
 .. warning:: 
 
-    The version of the ``datasets`` library installed in the class image contains a bug. You 
-    will need to update the version to at least 2.15 (use ``pip install -U datasets``) to 
-    update it to the latest version. To complete the training section, you will also need 
-    ``scikit-learn`` and ``scipy``. You can use ``pip install scikit-learn scipy`` to add those. 
+    The version of the ``datasets`` library installed in the initial version of the class image contains a bug. 
+    I have updated the ``jstubbs/coe379l-llm:sp25`` image on Docker Hub with a fix, but if you want to use the 
+    previous version, you will need to update the version to at least 2.15 (use ``pip install -U datasets``) to 
+    update it to the latest version. To complete the training section, you may also need to install 
+    ``scikit-learn`` and ``scipy`` which you can add with ``pip install scikit-learn scipy``, but these have 
+    been added to the new image as well.  
 
 .. code-block:: python3 
 
