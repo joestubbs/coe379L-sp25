@@ -16,3 +16,5 @@ tasks and benchmarks by working with some specific examples.
    intro_to_transformers
    hands_on_transformers
    project03-summary
+   ml_benchmarks
+   fine_tuning_transformers
