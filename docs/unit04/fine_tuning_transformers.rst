@@ -337,7 +337,3 @@ we can always use the ``.save_pretrained()`` method:
 
     model.save_pretrained("<some_directory")
 
-
-
-.. code-block:: python3 
-
